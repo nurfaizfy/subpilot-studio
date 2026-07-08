@@ -14,17 +14,13 @@
                 <n-form-item :label="$t('settings.general.language')">
                   <n-select v-model:value="settingsStore.language" :options="languageOptions" />
                 </n-form-item>
-                <n-form-item :label="$t('settings.general.theme')">
-                  <n-select v-model:value="settingsStore.theme" :options="themeOptions" />
-                </n-form-item>
-                <n-form-item :label="$t('settings.general.defaultWorkspace')">
-                  <n-input v-model:value="settingsStore.workspaceDir" placeholder="C:/Projects/Subtitles" />
+                <n-form-item>
+                  <n-checkbox v-model:checked="settingsStore.autoSave">{{ $t('settings.general.autoSave')
+                    }}</n-checkbox>
                 </n-form-item>
                 <n-form-item>
-                  <n-checkbox v-model:checked="settingsStore.autoSave">{{ $t('settings.general.autoSave') }}</n-checkbox>
-                </n-form-item>
-                <n-form-item>
-                  <n-checkbox v-model:checked="settingsStore.autoBackup">{{ $t('settings.general.autoBackup') }}</n-checkbox>
+                  <n-checkbox v-model:checked="settingsStore.autoBackup">{{ $t('settings.general.autoBackup')
+                    }}</n-checkbox>
                 </n-form-item>
               </n-form>
             </n-card>
@@ -45,26 +41,18 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
 import {
-  NCard, NForm, NFormItem, NInput, NSelect, NCheckbox, NTabs, NTabPane
+  NCard, NForm, NFormItem, NSelect, NCheckbox, NTabs, NTabPane
 } from 'naive-ui'
 import { useSettingsStore } from '../stores/settings'
 import Models from './Models.vue'
 import Providers from './Providers.vue'
 
-const { t } = useI18n()
 const settingsStore = useSettingsStore()
 
 const languageOptions = computed(() => [
   { label: 'English (US)', value: 'en-US' },
   { label: 'Bahasa Indonesia (ID)', value: 'id-ID' }
-])
-
-const themeOptions = computed(() => [
-  { label: t('settings.themes.dark'), value: 'dark' },
-  { label: t('settings.themes.light'), value: 'light' },
-  { label: t('settings.themes.system'), value: 'system' }
 ])
 </script>
 

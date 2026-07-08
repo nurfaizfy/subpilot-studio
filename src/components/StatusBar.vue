@@ -55,7 +55,7 @@ const displayTask = computed(() => {
     }
     return t('statusbar.encoding')
   }
-  return systemStore.currentTask === 'Idle' ? 'Idle' : systemStore.currentTask
+  return systemStore.currentTask === 'Idle' ? t('aistudio.idle') : systemStore.currentTask
 })
 
 onMounted(() => {

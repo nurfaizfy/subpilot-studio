@@ -4,8 +4,6 @@ import i18n from '../i18n'
 
 export const useSettingsStore = defineStore('settings', () => {
   const language = ref('en-US')
-  const theme = ref('dark')
-  const workspaceDir = ref('')
   const autoSave = ref(true)
   const autoBackup = ref(false)
 
@@ -17,8 +15,6 @@ export const useSettingsStore = defineStore('settings', () => {
         language.value = parsed.language
         ;(i18n.global.locale as any).value = parsed.language
       }
-      if (parsed.theme !== undefined) theme.value = parsed.theme
-      if (parsed.workspaceDir !== undefined) workspaceDir.value = parsed.workspaceDir
       if (parsed.autoSave !== undefined) autoSave.value = parsed.autoSave
       if (parsed.autoBackup !== undefined) autoBackup.value = parsed.autoBackup
     }
@@ -27,15 +23,13 @@ export const useSettingsStore = defineStore('settings', () => {
   const saveSettings = () => {
     localStorage.setItem('subpilot-settings', JSON.stringify({
       language: language.value,
-      theme: theme.value,
-      workspaceDir: workspaceDir.value,
       autoSave: autoSave.value,
       autoBackup: autoBackup.value
     }))
   }
 
   watch([
-    language, theme, workspaceDir, autoSave, autoBackup
+    language, autoSave, autoBackup
   ], () => {
     saveSettings()
     ;(i18n.global.locale as any).value = language.value
@@ -45,8 +39,6 @@ export const useSettingsStore = defineStore('settings', () => {
 
   return {
     language,
-    theme,
-    workspaceDir,
     autoSave,
     autoBackup
   }

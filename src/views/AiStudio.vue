@@ -19,7 +19,8 @@
                     <n-radio value="cpu">{{ $t('aistudio.cpu') }}</n-radio>
                     <n-radio value="cuda" :disabled="!hasCuda">
                       {{ $t('aistudio.gpu') }}
-                      <span v-if="!hasCuda" style="font-size: 11px; margin-left: 4px; color: #ef4444;">{{ $t('aistudio.notSupported') }}</span>
+                      <span v-if="!hasCuda" style="font-size: 11px; margin-left: 4px; color: #ef4444;">{{
+                        $t('aistudio.notSupported') }}</span>
                     </n-radio>
                   </n-space>
                 </n-radio-group>
@@ -86,12 +87,14 @@
               </n-form-item>
 
               <n-form-item :label="$t('aistudio.model')">
-                <n-input v-model:value="translationStore.model" :placeholder="$t('aistudio.modelPlaceholder')" readonly />
+                <n-input v-model:value="translationStore.model" :placeholder="$t('aistudio.modelPlaceholder')"
+                  readonly />
               </n-form-item>
 
               <div class="lang-row">
                 <n-form-item :label="$t('aistudio.sourceSubtitle')">
-                  <n-select v-model:value="selectedSourcePath" :options="sourceOptions" :placeholder="$t('aistudio.selectSource')" />
+                  <n-select v-model:value="selectedSourcePath" :options="sourceOptions"
+                    :placeholder="$t('aistudio.selectSource')" />
                 </n-form-item>
 
                 <n-form-item :label="$t('aistudio.sourceLanguage')">
@@ -109,15 +112,16 @@
 
               <n-form-item :label="$t('aistudio.customPrompt')">
                 <n-input type="textarea" v-model:value="translationStore.customPrompt"
-                  :placeholder="$t('aistudio.promptPlaceholder')"
-                  :autosize="{ minRows: 2, maxRows: 4 }" />
+                  :placeholder="$t('aistudio.promptPlaceholder')" :autosize="{ minRows: 2, maxRows: 4 }" />
               </n-form-item>
 
               <div class="actions">
-                <n-button type="primary" size="large" block
-                  :disabled="!projectStore.currentProject || isTranslating || !selectedSourcePath"
-                  @click="startTranslation">
+                <n-button v-if="!isTranslating" type="primary" size="large" block
+                  :disabled="!projectStore.currentProject || !selectedSourcePath" @click="startTranslation">
                   {{ $t('aistudio.startTranslation') }}
+                </n-button>
+                <n-button v-else type="error" size="large" block @click="cancelTranslation">
+                  {{ $t('aistudio.cancel') }}
                 </n-button>
                 <div v-if="!selectedSourcePath" style="color: #f59e0b; margin-top: 8px; text-align: center;">
                   {{ $t('aistudio.generateFirst') }}
@@ -140,21 +144,27 @@
             <div v-else class="queue-list">
               <div class="stats-row" style="margin-bottom: 16px;">
                 <n-statistic :label="$t('aistudio.totalChunks')" :value="chunks.length" />
-                <n-statistic :label="$t('aistudio.completed')" :value="chunks.filter(c => c.status === 'success').length" />
+                <n-statistic :label="$t('aistudio.completed')"
+                  :value="chunks.filter(c => c.status === 'success').length" />
                 <n-statistic :label="$t('aistudio.failed')" :value="chunks.filter(c => c.status === 'error').length" />
               </div>
 
               <div class="chunk-list-container">
                 <div v-for="chunk in chunks" :key="chunk.id" class="chunk-item" :class="chunk.status">
                   <div class="chunk-info">
-                    <strong>{{ $t('aistudio.chunk') }} {{ chunk.id + 1 }}</strong> ({{ $t('aistudio.lines') }} {{ chunk.id * transConfig.batchSize + 1 }} - {{
+                    <strong>{{ $t('aistudio.chunk') }} {{ chunk.id + 1 }}</strong> ({{ $t('aistudio.lines') }} {{
+                      chunk.id *
+                    transConfig.batchSize + 1 }} - {{
                       Math.min((chunk.id + 1) * transConfig.batchSize, totalTranslationLines) }})
                   </div>
                   <div class="chunk-status">
                     <span v-if="chunk.status === 'pending'">{{ $t('aistudio.pending') }}</span>
-                    <span v-if="chunk.status === 'processing'" class="processing">{{ $t('aistudio.translatingStatus') }}</span>
+                    <span v-if="chunk.status === 'processing'" class="processing">{{ $t('aistudio.translatingStatus')
+                      }}</span>
                     <span v-if="chunk.status === 'success'" class="success">{{ $t('aistudio.success') }}</span>
-                    <span v-if="chunk.status === 'error'" class="error">{{ $t('aistudio.errorStatus', { error: chunk.errorMessage }) }}</span>
+                    <span v-if="chunk.status === 'error'" class="error">{{ $t('aistudio.errorStatus', {
+                      error:
+                      chunk.errorMessage }) }}</span>
                     <n-button v-if="chunk.status === 'error'" size="tiny" type="warning" @click="retryChunk(chunk)"
                       style="margin-left: 8px;">
                       {{ $t('aistudio.retry') }}
@@ -216,6 +226,8 @@ const hasCuda = ref(false)
 let unlisten: (() => void) | null = null
 
 const availableVersions = ref<SubtitleVersion[]>([])
+const isTranslating = ref(false)
+const cancelTranslationFlag = ref(false)
 const selectedSourcePath = ref<string | null>(null)
 
 const sourceOptions = computed(() => {
@@ -250,7 +262,6 @@ watch(() => projectStore.currentProject?.id, (newId) => {
 const transConfig = ref({
   batchSize: 50
 })
-const isTranslating = ref(false)
 const chunks = ref<TranslationChunk[]>([])
 const originalLines = ref<SubtitleLine[]>([])
 const totalTranslationLines = ref(0)
@@ -318,7 +329,7 @@ onMounted(async () => {
       } else if (data.type === 'done') {
         isRunning.value = false
         systemStore.isTranscribing = false
-        systemStore.setTask(t('aistudio.idle'))
+        systemStore.setTask('Idle')
         message.success(t('aistudio.messages.transcriptionComplete'))
         progress.value.percent = 100
         progress.value.current_segment = 'Done.'
@@ -357,7 +368,7 @@ onMounted(async () => {
       } else if (data.type === 'error') {
         isRunning.value = false
         systemStore.isTranscribing = false
-        systemStore.setTask(t('aistudio.idle'))
+        systemStore.setTask('Idle')
         message.error(t('aistudio.messages.error') + data.message)
       } else if (data.type === 'info') {
         progress.value.current_segment = data.message
@@ -423,7 +434,7 @@ const cancelTranscription = async () => {
     await invoke('cancel_transcription_cmd')
     isRunning.value = false
     systemStore.isTranscribing = false
-    systemStore.setTask(t('aistudio.idle'))
+    systemStore.setTask('Idle')
     progress.value.current_segment = t('aistudio.messages.cancelledByUser')
     message.warning(t('aistudio.messages.transcriptionCancelled'))
   } catch (e: any) {
@@ -447,6 +458,7 @@ const startTranslation = async () => {
   }
 
   isTranslating.value = true
+  cancelTranslationFlag.value = false
   systemStore.isTranslating = true
   systemStore.setTask(t('aistudio.messages.translatingSubtitles'))
   try {
@@ -460,6 +472,10 @@ const startTranslation = async () => {
     chunks.value = TranslationService.createChunks(originalLines.value, transConfig.value.batchSize)
 
     for (const chunk of chunks.value) {
+      if (cancelTranslationFlag.value) {
+        message.warning(t('aistudio.messages.cancelledByUser') || 'Cancelled')
+        break
+      }
       await processChunk(chunk)
     }
 
@@ -472,9 +488,14 @@ const startTranslation = async () => {
     message.error(t('aistudio.messages.translationStartFailed') + msg)
   } finally {
     isTranslating.value = false
+    cancelTranslationFlag.value = false
     systemStore.isTranslating = false
-    systemStore.setTask(t('aistudio.idle'))
+    systemStore.setTask('Idle')
   }
+}
+
+const cancelTranslation = () => {
+  cancelTranslationFlag.value = true
 }
 
 const handleTabLeave = () => {
@@ -488,18 +509,48 @@ const handleTabLeave = () => {
 const processChunk = async (chunk: TranslationChunk) => {
   chunk.status = 'processing'
   try {
-    const translated = await TranslationService.translateChunk(chunk)
+    const translatePromise = TranslationService.translateChunk(chunk)
+    
+    const checkCancel = new Promise<any>((_, reject) => {
+      const interval = setInterval(() => {
+        if (cancelTranslationFlag.value) {
+          clearInterval(interval)
+          reject(new Error(t('aistudio.messages.cancelledByUser') || 'Cancelled by user'))
+        }
+      }, 300)
+      translatePromise.then(() => clearInterval(interval)).catch(() => clearInterval(interval))
+    })
+
+    const translated = await Promise.race([translatePromise, checkCancel])
     chunk.lines = translated
     chunk.status = 'success'
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
-    chunk.status = 'error'
-    chunk.errorMessage = msg || 'Unknown error'
+    if (cancelTranslationFlag.value) {
+      chunk.status = 'pending'
+    } else {
+      chunk.status = 'error'
+      chunk.errorMessage = msg || 'Unknown error'
+    }
   }
 }
 
 const retryChunk = async (chunk: TranslationChunk) => {
+  isTranslating.value = true
+  systemStore.isTranslating = true
+  systemStore.setTask(t('aistudio.messages.translatingSubtitles'))
+
   await processChunk(chunk)
+
+  if (chunks.value.every(c => c.status !== 'processing')) {
+    isTranslating.value = false
+    systemStore.isTranslating = false
+    systemStore.setTask('Idle')
+
+    if (chunks.value.every(c => c.status === 'success')) {
+      await saveTranslation()
+    }
+  }
 }
 
 const saveTranslation = async () => {
