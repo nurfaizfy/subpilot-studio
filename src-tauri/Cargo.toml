@@ -1,0 +1,44 @@
+[package]
+name = "subpilot-studio"
+version = "1.0.0"
+description = "AI-Powered Subtitle Editor"
+authors = ["SubPilot Team"]
+edition = "2021"
+rust-version = "1.71"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.0.0-rc.13", features = [] }
+
+[dependencies]
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+log = "0.4"
+tauri = { version = "2.0.0-rc.17", features = ["protocol-asset"] }
+tauri-plugin-log = "2.0.0-rc"
+tauri-plugin-os = "2.0.0-rc"
+sysinfo = "0.30"
+rusqlite = { version = "0.31.0", features = ["bundled"] }
+uuid = { version = "1.8", features = ["v4", "serde"] }
+chrono = "0.4"
+reqwest = { version = "0.12", features = ["json", "stream"] }
+lazy_static = "1.4"
+tokio = { version = "1", features = ["full"] }
+sha2 = "0.10"
+tar = "0.4"
+flate2 = "1.0"
+keyring = "3.0"
+tauri-plugin-dialog = "2.0.0-rc"
+winreg = "0.52.0"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true
