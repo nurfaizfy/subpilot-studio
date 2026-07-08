@@ -1,8 +1,8 @@
 <template>
   <div class="dashboard">
     <div class="header">
-      <h2>Welcome to SubPilot Studio</h2>
-      <p class="subtitle">Your AI-powered subtitle production environment</p>
+      <h2>{{ $t('dashboard.welcomeTitle') }}</h2>
+      <p class="subtitle">{{ $t('dashboard.welcomeSubtitle') }}</p>
     </div>
 
     <div class="quick-actions">
@@ -11,8 +11,8 @@
           <n-icon size="48" color="#6366f1">
             <AddIcon />
           </n-icon>
-          <h3>Create Project</h3>
-          <p>Start a new subtitle project from scratch</p>
+          <h3>{{ $t('dashboard.createProject') }}</h3>
+          <p>{{ $t('dashboard.createProjectDesc') }}</p>
         </div>
       </n-card>
 
@@ -21,16 +21,16 @@
           <n-icon size="48" color="#10b981">
             <FolderOpenIcon />
           </n-icon>
-          <h3>Open Project</h3>
-          <p>Load an existing SubPilot project</p>
+          <h3>{{ $t('dashboard.openProject') }}</h3>
+          <p>{{ $t('dashboard.openProjectDesc') }}</p>
         </div>
       </n-card>
     </div>
 
     <div class="recent-projects" style="grid-column: 1 / -1;">
       <div class="section-header">
-        <h3>Recent Projects</h3>
-        <n-button text type="primary" @click="$router.push('/projects')">View All</n-button>
+        <h3>{{ $t('dashboard.recentProjects') }}</h3>
+        <n-button text type="primary" @click="$router.push('/projects')">{{ $t('dashboard.viewAll') }}</n-button>
       </div>
 
       <n-data-table :columns="columns" :data="projectStore.recentProjects" :bordered="false" :row-props="rowProps"
@@ -40,8 +40,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, h } from 'vue'
+import { onMounted, ref, computed, h } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { NCard, NIcon, NButton, NDataTable } from 'naive-ui'
 import {
   AddCircleOutline as AddIcon,
@@ -54,6 +55,7 @@ import { SubtitleManager } from '../services/subtitleManager'
 
 const router = useRouter()
 const projectStore = useProjectStore()
+const { t } = useI18n()
 const projectStatuses = ref<Record<string, string[]>>({})
 
 const renderStatusIcon = (condition: boolean) => {
@@ -63,16 +65,16 @@ const renderStatusIcon = (condition: boolean) => {
   return h(NIcon, { color: '#ef4444', size: 20 }, { default: () => h(CrossIcon) })
 }
 
-const columns = [
+const columns = computed(() => [
   {
-    title: 'Project Name', key: 'name',
+    title: t('dashboard.columns.projectName'), key: 'name',
     render(row: any) {
       return h('strong', { style: 'color: #f1f5f9' }, row.name)
     }
   },
-  { title: 'Type', key: 'project_type' },
+  { title: t('dashboard.columns.type'), key: 'project_type' },
   {
-    title: 'Transcript',
+    title: t('dashboard.columns.transcript'),
     key: 'transcript',
     align: 'center' as const,
     render(row: any) {
@@ -81,7 +83,7 @@ const columns = [
     }
   },
   {
-    title: 'Translate',
+    title: t('dashboard.columns.translate'),
     key: 'translate',
     align: 'center' as const,
     render(row: any) {
@@ -90,7 +92,7 @@ const columns = [
     }
   },
   {
-    title: 'Ready to Export',
+    title: t('dashboard.columns.readyToExport'),
     key: 'export',
     align: 'center' as const,
     render(row: any) {
@@ -100,13 +102,13 @@ const columns = [
     }
   },
   {
-    title: 'Last Modified',
+    title: t('dashboard.columns.lastModified'),
     key: 'last_modified',
     render(row: any) {
       return new Date(row.last_modified).toLocaleDateString()
     }
   }
-]
+])
 
 const rowProps = (row: any) => {
   return {

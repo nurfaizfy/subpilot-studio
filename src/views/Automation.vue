@@ -1,54 +1,54 @@
 <template>
   <div class="automation-view">
     <div class="header">
-      <h2>Watch Folder Automation</h2>
-      <p class="subtitle">Automatically process videos dropped into a folder</p>
+      <h2>{{ $t('automation.title') }}</h2>
+      <p class="subtitle">{{ $t('automation.subtitle') }}</p>
     </div>
 
     <div class="content-grid">
-      <n-card class="settings-card" title="Automation Rules">
+      <n-card class="settings-card" :title="$t('automation.rulesTitle')">
         <n-form :model="autoStore" label-placement="top">
           
           <div class="master-switch">
             <n-switch v-model:value="autoStore.enabled" size="large" />
             <div class="switch-label">
               <div class="title" :class="{ active: autoStore.enabled }">
-                {{ autoStore.enabled ? 'Automation is ACTIVE' : 'Automation is STOPPED' }}
+                {{ autoStore.enabled ? $t('automation.active') : $t('automation.stopped') }}
               </div>
               <div class="desc">
-                When active, SubPilot will check the Watch Folder every 10 seconds.
+                {{ $t('automation.desc') }}
               </div>
             </div>
           </div>
 
-          <n-form-item label="Watch Folder Path">
+          <n-form-item :label="$t('automation.watchFolder')">
             <n-input v-model:value="autoStore.watchFolder" placeholder="C:/Downloads/Auto_Subs" :disabled="autoStore.enabled" />
           </n-form-item>
 
-          <n-form-item label="Speech Recognition Model">
+          <n-form-item :label="$t('automation.speechModel')">
             <n-select v-model:value="autoStore.whisperModel" :options="whisperOptions" :disabled="autoStore.enabled" />
           </n-form-item>
 
-          <n-form-item label="Auto Translate Target">
+          <n-form-item :label="$t('automation.translateTarget')">
             <n-select v-model:value="autoStore.translateTarget" :options="languageOptions" :disabled="autoStore.enabled" />
           </n-form-item>
 
         </n-form>
       </n-card>
 
-      <n-card class="log-card" title="Activity Log">
+      <n-card class="log-card" :title="$t('automation.logTitle')">
         <template #header-extra>
           <n-tag v-if="autoStore.isProcessing" type="warning" size="small">
-            Processing...
+            {{ $t('automation.processing') }}
           </n-tag>
           <n-tag v-else type="success" size="small">
-            Idle
+            {{ $t('automation.idle') }}
           </n-tag>
         </template>
         
         <div class="log-window">
           <div v-if="autoStore.history.length === 0" class="empty-log">
-            No activity yet.
+            {{ $t('automation.emptyLog') }}
           </div>
           <div 
             v-for="(log, index) in autoStore.history" 
@@ -70,8 +70,11 @@ import {
   NCard, NForm, NFormItem, NInput, NSelect, NSwitch, NTag
 } from 'naive-ui'
 import { useAutomationStore } from '../stores/automation'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const autoStore = useAutomationStore()
+const { t } = useI18n()
 
 const whisperOptions = [
   { label: 'Tiny', value: 'tiny' },
@@ -80,10 +83,10 @@ const whisperOptions = [
   { label: 'Medium', value: 'medium' }
 ]
 
-const languageOptions = [
-  { label: 'Indonesian', value: 'id' },
-  { label: 'English', value: 'en' }
-]
+const languageOptions = computed(() => [
+  { label: t('automation.languages.id'), value: 'id' },
+  { label: t('automation.languages.en'), value: 'en' }
+])
 </script>
 
 <style scoped>

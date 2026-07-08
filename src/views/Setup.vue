@@ -7,17 +7,17 @@
             <HardwareChipOutline />
           </n-icon>
         </div>
-        <h2>Welcome to SubPilot Studio</h2>
-        <p>Let's get your environment ready before we start.</p>
+        <h2>{{ $t('setup.title') }}</h2>
+        <p>{{ $t('setup.subtitle') }}</p>
       </div>
 
       <div class="checklist">
         <div class="check-item" :class="{ ok: runtimeStore.status.ffmpeg_ok }">
           <div class="info">
-            <h4>FFmpeg Engine</h4>
-            <p>Required for encoding and video processing</p>
+            <h4>{{ $t('setup.ffmpeg') }}</h4>
+            <p>{{ $t('setup.ffmpegDesc') }}</p>
             <div v-if="activeRepairs['ffmpeg']" class="progress-info">
-              <span class="status-text">{{ activeRepairs['ffmpeg'] === 'downloading' ? 'Downloading...' : 'Extracting...' }}</span>
+              <span class="status-text">{{ activeRepairs['ffmpeg'] === 'downloading' ? $t('setup.downloading') : $t('setup.extracting') }}</span>
               <n-progress type="line" indeterminate size="small" status="info" :show-indicator="false" style="width: 100%" />
             </div>
           </div>
@@ -29,10 +29,10 @@
 
         <div class="check-item" :class="{ ok: runtimeStore.status.whisper_ok }">
           <div class="info">
-            <h4>Whisper Engine</h4>
-            <p>Required for AI transcription</p>
+            <h4>{{ $t('setup.whisper') }}</h4>
+            <p>{{ $t('setup.whisperDesc') }}</p>
             <div v-if="activeRepairs['whisper']" class="progress-info">
-              <span class="status-text">{{ activeRepairs['whisper'] === 'downloading' ? 'Downloading...' : 'Extracting...' }}</span>
+              <span class="status-text">{{ activeRepairs['whisper'] === 'downloading' ? $t('setup.downloading') : $t('setup.extracting') }}</span>
               <n-progress type="line" indeterminate size="small" status="info" :show-indicator="false" style="width: 100%" />
             </div>
           </div>
@@ -50,11 +50,11 @@
               <DownloadOutline />
             </n-icon>
           </template>
-          Download Missing
+          {{ $t('setup.downloadMissing') }}
         </n-button>
 
         <n-button v-if="isReady" type="primary" size="large" block @click="startApp">
-          Launch SubPilot
+          {{ $t('setup.launch') }}
         </n-button>
       </div>
     </div>

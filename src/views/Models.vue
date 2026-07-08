@@ -1,8 +1,8 @@
 <template>
   <div class="models-view">
     <div class="header">
-      <h2>AI Model Manager</h2>
-      <p>Download and manage Faster-Whisper models for local speech recognition.</p>
+      <h2>{{ $t('models.title') }}</h2>
+      <p>{{ $t('models.subtitle') }}</p>
     </div>
 
     <div class="model-grid">
@@ -11,18 +11,18 @@
           <div class="card-title">
             <span class="name">{{ model.name }}</span>
             <n-tag :type="model.is_installed ? 'success' : 'default'" size="small">
-              {{ model.is_installed ? 'Installed' : 'Not Installed' }}
+              {{ model.is_installed ? $t('models.installed') : $t('models.notInstalled') }}
             </n-tag>
           </div>
         </template>
         
         <div class="card-content">
           <div class="info-row">
-            <span class="label">Download Size:</span>
+            <span class="label">{{ $t('models.downloadSize') }}</span>
             <span class="value">{{ model.size_mb }} MB</span>
           </div>
           <div class="info-row" v-if="model.is_installed">
-            <span class="label">Disk Usage:</span>
+            <span class="label">{{ $t('models.diskUsage') }}</span>
             <span class="value">{{ model.disk_usage_mb.toFixed(1) }} MB</span>
           </div>
           
@@ -46,7 +46,7 @@
                 size="small" 
                 @click="modelsStore.pauseDownload(model.id)"
               >
-                Pause
+                {{ $t('models.actions.pause') }}
               </n-button>
               <n-button 
                 v-if="getProgress(model.id)!.status === 'paused'" 
@@ -54,14 +54,14 @@
                 type="primary"
                 @click="modelsStore.resumeDownload(model.id)"
               >
-                Resume
+                {{ $t('models.actions.resume') }}
               </n-button>
               <n-button 
                 size="small" 
                 type="error" ghost
                 @click="modelsStore.cancelDownload(model.id)"
               >
-                Cancel
+                {{ $t('models.actions.cancel') }}
               </n-button>
             </div>
           </div>
@@ -78,7 +78,7 @@
               <template #icon>
                 <n-icon><DownloadOutline /></n-icon>
               </template>
-              Download
+              {{ $t('models.actions.download') }}
             </n-button>
             
             <n-button 
@@ -91,7 +91,7 @@
               <template #icon>
                 <n-icon><TrashOutline /></n-icon>
               </template>
-              Delete
+              {{ $t('models.actions.delete') }}
             </n-button>
           </div>
         </template>
@@ -105,8 +105,10 @@ import { onMounted } from 'vue'
 import { NCard, NTag, NButton, NProgress, NIcon } from 'naive-ui'
 import { DownloadOutline, TrashOutline } from '@vicons/ionicons5'
 import { useModelsStore, type DownloadProgressEvent } from '../stores/models'
+import { useI18n } from 'vue-i18n'
 
 const modelsStore = useModelsStore()
+const { t } = useI18n()
 
 onMounted(() => {
   modelsStore.fetchModels()
@@ -118,13 +120,13 @@ const getProgress = (id: string): DownloadProgressEvent | undefined => {
 
 const getStatusText = (status: string) => {
   switch (status) {
-    case 'starting': return 'Starting download...'
-    case 'downloading': return 'Downloading'
-    case 'paused': return 'Paused'
-    case 'verifying': return 'Verifying checksum...'
-    case 'extracting': return 'Extracting files...'
-    case 'completed': return 'Completed'
-    case 'error': return 'Error downloading'
+    case 'starting': return t('models.status.starting')
+    case 'downloading': return t('models.status.downloading')
+    case 'paused': return t('models.status.paused')
+    case 'verifying': return t('models.status.verifying')
+    case 'extracting': return t('models.status.extracting')
+    case 'completed': return t('models.status.completed')
+    case 'error': return t('models.status.error')
     default: return status
   }
 }

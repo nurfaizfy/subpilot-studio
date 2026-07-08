@@ -1,8 +1,8 @@
 <template>
   <footer class="statusbar">
     <div class="status-left">
-      <n-icon size="16" :class="{ 'spin': displayTask !== 'Idle' }">
-        <SyncIcon v-if="displayTask !== 'Idle'" />
+      <n-icon size="16" :class="{ 'spin': isBusy }">
+        <SyncIcon v-if="isBusy" />
         <CheckmarkIcon v-else />
       </n-icon>
       <span class="task-text">{{ displayTask }}</span>
@@ -24,6 +24,7 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { NIcon } from 'naive-ui'
 import { 
   SyncOutline as SyncIcon, 
@@ -36,20 +37,25 @@ import { invoke } from '@tauri-apps/api/core'
 
 const systemStore = useSystemStore()
 const encoderStore = useEncoderStore()
+const { t } = useI18n()
 let intervalId: number;
 
+const isBusy = computed(() => {
+  return systemStore.isImporting || systemStore.isTranscribing || systemStore.isTranslating || systemStore.isEncoding || systemStore.currentTask !== 'Idle'
+})
+
 const displayTask = computed(() => {
-  if (systemStore.isImporting) return 'Importing Video...'
-  if (systemStore.isTranscribing) return 'Transcribing Audio...'
-  if (systemStore.isTranslating) return 'Translating Subtitles...'
+  if (systemStore.isImporting) return t('statusbar.importing')
+  if (systemStore.isTranscribing) return t('statusbar.transcribing')
+  if (systemStore.isTranslating) return t('statusbar.translating')
   if (systemStore.isEncoding) {
     if (encoderStore.activeJobId) {
       const job = encoderStore.queue.find(j => j.id === encoderStore.activeJobId)
-      if (job) return `Encoding: ${Math.round(job.percent)}%`
+      if (job) return t('statusbar.encodingPercent', { percent: Math.round(job.percent) })
     }
-    return 'Encoding Video...'
+    return t('statusbar.encoding')
   }
-  return systemStore.currentTask
+  return systemStore.currentTask === 'Idle' ? 'Idle' : systemStore.currentTask
 })
 
 onMounted(() => {

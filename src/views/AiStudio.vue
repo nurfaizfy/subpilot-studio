@@ -1,76 +1,75 @@
 <template>
   <div class="ai-view">
     <n-tabs type="segment" animated @before-leave="handleTabLeave">
-      <n-tab-pane name="transcription" tab="Speech Recognition">
+      <n-tab-pane name="transcription" :tab="$t('aistudio.speechRecognition')">
         <div class="content-grid">
-          <n-card class="settings-card" title="Speech Recognition Settings">
+          <n-card class="settings-card" :title="$t('aistudio.speechSettings')">
             <n-form :model="config" label-placement="top">
-              <n-form-item label="Whisper Model">
+              <n-form-item :label="$t('aistudio.whisperModel')">
                 <n-select v-model:value="config.model" :options="modelOptions" />
               </n-form-item>
 
-              <n-form-item label="Language">
+              <n-form-item :label="$t('aistudio.language')">
                 <n-select v-model:value="config.language" :options="langOptions" />
               </n-form-item>
 
-              <n-form-item label="Compute Device">
+              <n-form-item :label="$t('aistudio.computeDevice')">
                 <n-radio-group v-model:value="config.device" name="device">
                   <n-space>
-                    <n-radio value="cpu">CPU</n-radio>
+                    <n-radio value="cpu">{{ $t('aistudio.cpu') }}</n-radio>
                     <n-radio value="cuda" :disabled="!hasCuda">
-                      GPU (CUDA)
-                      <span v-if="!hasCuda" style="font-size: 11px; margin-left: 4px; color: #ef4444;">(Not
-                        Supported)</span>
+                      {{ $t('aistudio.gpu') }}
+                      <span v-if="!hasCuda" style="font-size: 11px; margin-left: 4px; color: #ef4444;">{{ $t('aistudio.notSupported') }}</span>
                     </n-radio>
                   </n-space>
                 </n-radio-group>
               </n-form-item>
 
-              <n-form-item label="Output Format">
+              <n-form-item :label="$t('aistudio.outputFormat')">
                 <n-select v-model:value="config.format" :options="formatOptions" />
               </n-form-item>
 
               <div class="actions">
                 <n-button type="primary" size="large" block :disabled="!projectStore.currentProject || isRunning"
                   @click="startTranscription">
-                  Start Transcription
+                  {{ $t('aistudio.startTranscription') }}
                 </n-button>
               </div>
             </n-form>
           </n-card>
 
-          <n-card class="progress-card" title="Status">
+          <n-card class="progress-card" :title="$t('aistudio.status')">
             <template #header-extra>
               <n-tag :type="isRunning ? 'info' : 'default'">
-                {{ isRunning ? 'Running' : 'Idle' }}
+                {{ isRunning ? $t('aistudio.running') : $t('aistudio.idle') }}
               </n-tag>
             </template>
 
             <div v-if="!hasStarted && !isRunning" class="empty-state">
-              <n-empty description="Configure settings and click Start" />
+              <n-empty :description="$t('aistudio.configureAndStart')" />
             </div>
 
             <div v-else class="progress-content">
               <div class="stats-row">
-                <n-statistic label="Progress" :value="progress.percent + '%'" />
-                <n-statistic label="Speed" :value="(progress.speed || 0).toFixed(1) + 'x'" />
-                <n-statistic label="ETA" :value="formatTime(progress.eta)" />
+                <n-statistic :label="$t('aistudio.progress')" :value="progress.percent + '%'" />
+                <n-statistic :label="$t('aistudio.speed')" :value="(progress.speed || 0).toFixed(1) + 'x'" />
+                <n-statistic :label="$t('aistudio.eta')" :value="formatTime(progress.eta)" />
               </div>
 
               <n-progress type="line" :percentage="progress.percent" :indicator-placement="'inside'" processing
                 class="progress-bar" />
 
               <div class="live-caption-box" :class="{ 'is-running': isRunning }">
-                <span class="caption-label"><i v-if="isRunning"></i>Current Segment</span>
-                <p class="caption-text">{{ progress.current_segment || 'Initializing...' }}</p>
+                <span class="caption-label"><i v-if="isRunning"></i>{{ $t('aistudio.currentSegment') }}</span>
+                <p class="caption-text">{{ progress.current_segment || $t('aistudio.initializing') }}</p>
               </div>
 
               <div class="control-actions">
                 <n-button v-if="isRunning" type="error" @click="cancelTranscription">
-                  Cancel
+                  {{ $t('aistudio.cancel') }}
                 </n-button>
                 <n-button v-if="!isRunning && hasStarted" type="primary" @click="startTranscription">
-                  Resume / Retry
+                  {{ $t('aistudio.resumeRetry') }}
                 </n-button>
               </div>
             </div>
@@ -78,39 +77,39 @@
         </div>
       </n-tab-pane>
 
-      <n-tab-pane name="translation" tab="AI Translation">
+      <n-tab-pane name="translation" :tab="$t('aistudio.aiTranslation')">
         <div class="content-grid">
-          <n-card class="settings-card" title="Translation Settings">
+          <n-card class="settings-card" :title="$t('aistudio.translationSettings')">
             <n-form label-placement="top">
-              <n-form-item label="Provider">
+              <n-form-item :label="$t('aistudio.provider')">
                 <n-select v-model:value="translationStore.provider" :options="providerOptions" />
               </n-form-item>
 
-              <n-form-item label="Model">
-                <n-input v-model:value="translationStore.model" placeholder="e.g. gemini-1.5-flash" readonly />
+              <n-form-item :label="$t('aistudio.model')">
+                <n-input v-model:value="translationStore.model" :placeholder="$t('aistudio.modelPlaceholder')" readonly />
               </n-form-item>
 
               <div class="lang-row">
-                <n-form-item label="Source Subtitle">
-                  <n-select v-model:value="selectedSourcePath" :options="sourceOptions" placeholder="Select source" />
+                <n-form-item :label="$t('aistudio.sourceSubtitle')">
+                  <n-select v-model:value="selectedSourcePath" :options="sourceOptions" :placeholder="$t('aistudio.selectSource')" />
                 </n-form-item>
 
-                <n-form-item label="Source Language">
+                <n-form-item :label="$t('aistudio.sourceLanguage')">
                   <n-select v-model:value="translationStore.sourceLang" :options="langOptions" />
                 </n-form-item>
                 <div class="arrow">→</div>
-                <n-form-item label="Target">
+                <n-form-item :label="$t('aistudio.target')">
                   <n-select v-model:value="translationStore.targetLang" :options="targetLangOptions" />
                 </n-form-item>
               </div>
 
-              <n-form-item label="Batch Size (Lines per request)">
+              <n-form-item :label="$t('aistudio.batchSize')">
                 <n-input-number v-model:value="transConfig.batchSize" :min="10" :max="100" />
               </n-form-item>
 
-              <n-form-item label="Custom Prompt / Tone (Optional)">
+              <n-form-item :label="$t('aistudio.customPrompt')">
                 <n-input type="textarea" v-model:value="translationStore.customPrompt"
-                  placeholder="e.g. Use polite and natural language. Avoid literal translation of profanity..."
+                  :placeholder="$t('aistudio.promptPlaceholder')"
                   :autosize="{ minRows: 2, maxRows: 4 }" />
               </n-form-item>
 
@@ -118,47 +117,47 @@
                 <n-button type="primary" size="large" block
                   :disabled="!projectStore.currentProject || isTranslating || !selectedSourcePath"
                   @click="startTranslation">
-                  Start Batch Translation
+                  {{ $t('aistudio.startTranslation') }}
                 </n-button>
                 <div v-if="!selectedSourcePath" style="color: #f59e0b; margin-top: 8px; text-align: center;">
-                  * Generate or import subtitles first before translating.
+                  {{ $t('aistudio.generateFirst') }}
                 </div>
               </div>
             </n-form>
           </n-card>
 
-          <n-card class="progress-card" title="Translation Queue">
+          <n-card class="progress-card" :title="$t('aistudio.translationQueue')">
             <template #header-extra>
               <n-tag :type="isTranslating ? 'info' : 'default'">
-                {{ isTranslating ? 'Translating' : 'Idle' }}
+                {{ isTranslating ? $t('aistudio.translating') : $t('aistudio.idle') }}
               </n-tag>
             </template>
 
             <div v-if="chunks.length === 0" class="empty-state">
-              <n-empty description="Ready to translate" />
+              <n-empty :description="$t('aistudio.readyToTranslate')" />
             </div>
 
             <div v-else class="queue-list">
               <div class="stats-row" style="margin-bottom: 16px;">
-                <n-statistic label="Total Chunks" :value="chunks.length" />
-                <n-statistic label="Completed" :value="chunks.filter(c => c.status === 'success').length" />
-                <n-statistic label="Failed" :value="chunks.filter(c => c.status === 'error').length" />
+                <n-statistic :label="$t('aistudio.totalChunks')" :value="chunks.length" />
+                <n-statistic :label="$t('aistudio.completed')" :value="chunks.filter(c => c.status === 'success').length" />
+                <n-statistic :label="$t('aistudio.failed')" :value="chunks.filter(c => c.status === 'error').length" />
               </div>
 
               <div class="chunk-list-container">
                 <div v-for="chunk in chunks" :key="chunk.id" class="chunk-item" :class="chunk.status">
                   <div class="chunk-info">
-                    <strong>Chunk {{ chunk.id + 1 }}</strong> (Lines {{ chunk.id * transConfig.batchSize + 1 }} - {{
+                    <strong>{{ $t('aistudio.chunk') }} {{ chunk.id + 1 }}</strong> ({{ $t('aistudio.lines') }} {{ chunk.id * transConfig.batchSize + 1 }} - {{
                       Math.min((chunk.id + 1) * transConfig.batchSize, totalTranslationLines) }})
                   </div>
                   <div class="chunk-status">
-                    <span v-if="chunk.status === 'pending'">Pending</span>
-                    <span v-if="chunk.status === 'processing'" class="processing">Translating...</span>
-                    <span v-if="chunk.status === 'success'" class="success">Success</span>
-                    <span v-if="chunk.status === 'error'" class="error">Error: {{ chunk.errorMessage }}</span>
+                    <span v-if="chunk.status === 'pending'">{{ $t('aistudio.pending') }}</span>
+                    <span v-if="chunk.status === 'processing'" class="processing">{{ $t('aistudio.translatingStatus') }}</span>
+                    <span v-if="chunk.status === 'success'" class="success">{{ $t('aistudio.success') }}</span>
+                    <span v-if="chunk.status === 'error'" class="error">{{ $t('aistudio.errorStatus', { error: chunk.errorMessage }) }}</span>
                     <n-button v-if="chunk.status === 'error'" size="tiny" type="warning" @click="retryChunk(chunk)"
                       style="margin-left: 8px;">
-                      Retry
+                      {{ $t('aistudio.retry') }}
                     </n-button>
                   </div>
                 </div>
@@ -180,6 +179,7 @@ import {
 } from 'naive-ui'
 import { invoke } from '@tauri-apps/api/core'
 import { listen } from '@tauri-apps/api/event'
+import { useI18n } from 'vue-i18n'
 import { useProjectStore } from '../stores/project'
 import { useModelsStore } from '../stores/models'
 import { MediaService } from '../services/mediaService'
@@ -201,6 +201,7 @@ const providersStore = useProvidersStore()
 const systemStore = useSystemStore()
 const subtitleStore = useSubtitleStore()
 const stylesStore = useStylesStore()
+const { t } = useI18n()
 
 const config = ref({
   model: 'base',
@@ -317,8 +318,8 @@ onMounted(async () => {
       } else if (data.type === 'done') {
         isRunning.value = false
         systemStore.isTranscribing = false
-        systemStore.setTask('Idle')
-        message.success('Transcription completed successfully!')
+        systemStore.setTask(t('aistudio.idle'))
+        message.success(t('aistudio.messages.transcriptionComplete'))
         progress.value.percent = 100
         progress.value.current_segment = 'Done.'
 
@@ -348,7 +349,7 @@ onMounted(async () => {
             }
 
             await loadSubtitleVersions()
-            message.success('New transcription is ready!')
+            message.success(t('aistudio.messages.newTranscriptionReady'))
           } catch (e) {
             console.error('Failed to load subtitles:', e)
           }
@@ -356,8 +357,8 @@ onMounted(async () => {
       } else if (data.type === 'error') {
         isRunning.value = false
         systemStore.isTranscribing = false
-        systemStore.setTask('Idle')
-        message.error(`Error: ${data.message}`)
+        systemStore.setTask(t('aistudio.idle'))
+        message.error(t('aistudio.messages.error') + data.message)
       } else if (data.type === 'info') {
         progress.value.current_segment = data.message
       }
@@ -373,26 +374,26 @@ onUnmounted(() => {
 
 const startTranscription = async () => {
   if (!projectStore.currentProject) {
-    message.error("Please select a project first")
+    message.error(t('aistudio.messages.selectProject'))
     return
   }
 
   const selectedModel = modelsStore.models.find(m => m.id === config.value.model)
   if (!selectedModel || !selectedModel.is_installed) {
-    message.error(`Model '${config.value.model}' is not installed. Please download it from Settings first.`)
+    message.error(t('aistudio.messages.modelNotInstalled', { model: config.value.model }))
     return
   }
 
   const project = projectStore.currentProject
   if (!project || !project.source_video) {
-    message.error("Project has no source video")
+    message.error(t('aistudio.messages.noSourceVideo'))
     return
   }
   hasStarted.value = true
   isRunning.value = true
   systemStore.isTranscribing = true
-  systemStore.setTask('Processing transcription...')
-  progress.value = { percent: 0, speed: 0, eta: 0, current_segment: 'Analyzing media...' }
+  systemStore.setTask(t('aistudio.messages.processingTranscription'))
+  progress.value = { percent: 0, speed: 0, eta: 0, current_segment: t('aistudio.messages.analyzingMedia') }
   try {
     const mediaInfo = await MediaService.analyzeMedia(project.source_video)
 
@@ -413,7 +414,7 @@ const startTranscription = async () => {
     const msg = e instanceof Error ? e.message : String(e)
     isRunning.value = false
     systemStore.isTranscribing = false
-    message.error("Failed to start transcription: " + msg)
+    message.error(t('aistudio.messages.transcriptionFailed') + msg)
   }
 }
 
@@ -422,9 +423,9 @@ const cancelTranscription = async () => {
     await invoke('cancel_transcription_cmd')
     isRunning.value = false
     systemStore.isTranscribing = false
-    systemStore.setTask('Idle')
-    progress.value.current_segment = 'Cancelled by user.'
-    message.warning('Transcription cancelled.')
+    systemStore.setTask(t('aistudio.idle'))
+    progress.value.current_segment = t('aistudio.messages.cancelledByUser')
+    message.warning(t('aistudio.messages.transcriptionCancelled'))
   } catch (e: any) {
     message.error(`Cancel failed: ${e}`)
   }
@@ -441,13 +442,13 @@ const formatTime = (seconds: number) => {
 const startTranslation = async () => {
   const project = projectStore.currentProject
   if (!project || !selectedSourcePath.value) {
-    message.error("Please select a target project and source subtitle")
+    message.error(t('aistudio.messages.selectTarget'))
     return
   }
 
   isTranslating.value = true
   systemStore.isTranslating = true
-  systemStore.setTask('Translating subtitles...')
+  systemStore.setTask(t('aistudio.messages.translatingSubtitles'))
   try {
     const content = await invoke<string>('read_text_file', { path: selectedSourcePath.value })
     const isAss = selectedSourcePath.value.toLowerCase().endsWith('.ass')
@@ -468,17 +469,17 @@ const startTranslation = async () => {
 
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
-    message.error("Failed to start translation: " + msg)
+    message.error(t('aistudio.messages.translationStartFailed') + msg)
   } finally {
     isTranslating.value = false
     systemStore.isTranslating = false
-    systemStore.setTask('Idle')
+    systemStore.setTask(t('aistudio.idle'))
   }
 }
 
 const handleTabLeave = () => {
   if (systemStore.isTranscribing || systemStore.isTranslating) {
-    message.warning("Please wait for the current process to finish before switching tabs.")
+    message.warning(t('aistudio.messages.waitProcess'))
     return false
   }
   return true
@@ -530,10 +531,10 @@ const saveTranslation = async () => {
 
     await subtitleStore.loadFromFile(outPath)
 
-    message.success("Translation saved and loaded in Editor!")
+    message.success(t('aistudio.messages.translationSaved'))
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
-    message.error("Failed to save translation: " + msg)
+    message.error(t('aistudio.messages.translationSaveFailed') + msg)
   }
 }
 

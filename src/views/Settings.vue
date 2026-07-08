@@ -1,30 +1,30 @@
 <template>
   <div class="settings-view">
     <div class="header">
-      <h2>Settings</h2>
-      <p class="subtitle">Configure application paths and integrations</p>
+      <h2>{{ $t('settings.title') }}</h2>
+      <p class="subtitle">{{ $t('settings.subtitle') }}</p>
     </div>
 
     <n-tabs type="line" class="settings-tabs">
-      <n-tab-pane name="general" tab="General Preferences">
+      <n-tab-pane name="general" :tab="$t('settings.tabs.general')">
         <div class="content-grid">
           <div class="column">
-            <n-card class="settings-card" title="General Preferences" style="margin-top: 24px;">
+            <n-card class="settings-card" :title="$t('settings.tabs.general')" style="margin-top: 24px;">
               <n-form :model="settingsStore" label-placement="top">
-                <n-form-item label="Language">
+                <n-form-item :label="$t('settings.general.language')">
                   <n-select v-model:value="settingsStore.language" :options="languageOptions" />
                 </n-form-item>
-                <n-form-item label="Theme">
+                <n-form-item :label="$t('settings.general.theme')">
                   <n-select v-model:value="settingsStore.theme" :options="themeOptions" />
                 </n-form-item>
-                <n-form-item label="Default Workspace Directory">
+                <n-form-item :label="$t('settings.general.defaultWorkspace')">
                   <n-input v-model:value="settingsStore.workspaceDir" placeholder="C:/Projects/Subtitles" />
                 </n-form-item>
                 <n-form-item>
-                  <n-checkbox v-model:checked="settingsStore.autoSave">Enable Auto-Save in Editor</n-checkbox>
+                  <n-checkbox v-model:checked="settingsStore.autoSave">{{ $t('settings.general.autoSave') }}</n-checkbox>
                 </n-form-item>
                 <n-form-item>
-                  <n-checkbox v-model:checked="settingsStore.autoBackup">Enable Automatic Backups</n-checkbox>
+                  <n-checkbox v-model:checked="settingsStore.autoBackup">{{ $t('settings.general.autoBackup') }}</n-checkbox>
                 </n-form-item>
               </n-form>
             </n-card>
@@ -32,11 +32,11 @@
         </div>
       </n-tab-pane>
 
-      <n-tab-pane name="models" tab="Speech Models">
+      <n-tab-pane name="models" :tab="$t('settings.tabs.models')">
         <Models />
       </n-tab-pane>
 
-      <n-tab-pane name="providers" tab="AI Providers">
+      <n-tab-pane name="providers" :tab="$t('settings.tabs.providers')">
         <Providers />
       </n-tab-pane>
     </n-tabs>
@@ -44,6 +44,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import {
   NCard, NForm, NFormItem, NInput, NSelect, NCheckbox, NTabs, NTabPane
 } from 'naive-ui'
@@ -51,18 +53,19 @@ import { useSettingsStore } from '../stores/settings'
 import Models from './Models.vue'
 import Providers from './Providers.vue'
 
+const { t } = useI18n()
 const settingsStore = useSettingsStore()
 
-const languageOptions = [
+const languageOptions = computed(() => [
   { label: 'English (US)', value: 'en-US' },
-  { label: 'Indonesian (ID)', value: 'id-ID' }
-]
+  { label: 'Bahasa Indonesia (ID)', value: 'id-ID' }
+])
 
-const themeOptions = [
-  { label: 'Dark (SubPilot Default)', value: 'dark' },
-  { label: 'Light', value: 'light' },
-  { label: 'System', value: 'system' }
-]
+const themeOptions = computed(() => [
+  { label: t('settings.themes.dark'), value: 'dark' },
+  { label: t('settings.themes.light'), value: 'light' },
+  { label: t('settings.themes.system'), value: 'system' }
+])
 </script>
 
 <style scoped>

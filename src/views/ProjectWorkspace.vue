@@ -1,7 +1,7 @@
 <template>
   <div class="workspace-view">
     <div v-if="!projectStore.currentProject">
-      <n-empty description="No Project Selected" />
+      <n-empty :description="$t('workspace.noProject')" />
     </div>
 
     <div v-else-if="!projectStore.currentProject.source_video" class="empty-state">
@@ -9,12 +9,12 @@
         <n-icon size="64" color="#6366f1">
           <FilmIcon />
         </n-icon>
-        <h2>Import Video</h2>
-        <p>This project has no source video yet. Import one to start generating subtitles.</p>
+        <h2>{{ $t('workspace.importVideo') }}</h2>
+        <p>{{ $t('workspace.importDesc') }}</p>
         <n-button type="primary" size="large" @click="handleImport">
-          Select Video File
+          {{ $t('workspace.selectVideo') }}
         </n-button>
-        <p class="drop-hint">or drop a video file here</p>
+        <p class="drop-hint">{{ $t('workspace.dropHint') }}</p>
       </div>
     </div>
 
@@ -30,12 +30,12 @@
               <FilmIcon />
             </n-icon>
           </template>
-          Change Media
+          {{ $t('workspace.changeMedia') }}
         </n-button>
       </div>
 
       <n-tabs type="line" animated class="flex-tabs" @before-leave="handleTabLeave" v-model:value="activeTab">
-        <n-tab-pane name="overview" tab="Overview">
+        <n-tab-pane name="overview" :tab="$t('workspace.tabs.overview')">
           <div class="overview-tab">
             <div v-if="systemStore.isImporting" class="importing-overlay">
               <div class="processing-content">
@@ -48,25 +48,25 @@
                   <div class="bar bar6"></div>
                   <div class="bar bar7"></div>
                 </div>
-                <h3 class="shimmer-text">Preparing Workspace</h3>
-                <p>Generating scene previews and analyzing audio tracks...</p>
+                <h3 class="shimmer-text">{{ $t('workspace.preparing') }}</h3>
+                <p>{{ $t('workspace.generatingPreviews') }}</p>
                 <n-progress type="line" :percentage="100" :show-indicator="false" status="info" processing />
               </div>
             </div>
             <MediaInfoPanel v-else-if="mediaInfo" :info="mediaInfo" />
-            <n-empty v-else description="Loading media info..." />
+            <n-empty v-else :description="$t('workspace.loadingMedia')" />
           </div>
         </n-tab-pane>
 
-        <n-tab-pane name="ai" tab="AI Studio">
+        <n-tab-pane name="ai" :tab="$t('workspace.tabs.aiStudio')">
           <AiStudio />
         </n-tab-pane>
 
-        <n-tab-pane name="editor" tab="Subtitle Editor">
+        <n-tab-pane name="editor" :tab="$t('workspace.tabs.editor')">
           <Editor />
         </n-tab-pane>
 
-        <n-tab-pane name="encoding" tab="Encoding & Export">
+        <n-tab-pane name="encoding" :tab="$t('workspace.tabs.encoding')">
           <Encoding />
         </n-tab-pane>
       </n-tabs>
@@ -92,12 +92,14 @@ import { useSubtitleStore } from '../stores/subtitle'
 import Editor from './Editor.vue'
 import AiStudio from './AiStudio.vue'
 import Encoding from './Encoding.vue'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const projectStore = useProjectStore()
 const systemStore = useSystemStore()
 const subtitleStore = useSubtitleStore()
 const message = useMessage()
+const { t } = useI18n()
 const mediaInfo = ref<MediaInfo | null>(null)
 const activeTab = ref('overview')
 let unlistenDrop: UnlistenFn | null = null
@@ -179,7 +181,7 @@ const loadMediaInfo = async (path: string) => {
 
 const handleTabLeave = () => {
   if (systemStore.isAppBusy) {
-    message.warning("Please wait for the current process to finish before switching tabs.")
+    message.warning(t('workspace.messages.waitProcess'))
     return false // Block tab switch
   }
   return true
@@ -199,7 +201,7 @@ const handleImport = async () => {
       await processImportFile(selected)
     }
   } catch (e) {
-    message.error("Failed to open file picker")
+    message.error(t('workspace.messages.failPicker'))
     console.error(e)
   }
 }
@@ -209,17 +211,17 @@ const processImportFile = async (filePath: string) => {
 
   const ext = filePath.split('.').pop()?.toLowerCase()
   if (!['mp4', 'mkv', 'avi', 'mov', 'ts'].includes(ext || '')) {
-    message.error("Unsupported file format. Please drop a video file.")
+    message.error(t('workspace.messages.unsupportedFormat'))
     return
   }
 
-  const loadingMsg = message.loading("Analyzing media with FFprobe...", { duration: 0 })
+  const loadingMsg = message.loading(t('workspace.messages.analyzing'), { duration: 0 })
   try {
     const updatedProject = { ...projectStore.currentProject, source_video: filePath }
     await projectStore.updateProject(updatedProject)
 
     loadingMsg.destroy()
-    message.success("Video imported! Processing in background...")
+    message.success(t('workspace.messages.importSuccess'))
 
     activeTab.value = 'overview'
     systemStore.isImporting = true
@@ -231,11 +233,11 @@ const processImportFile = async (filePath: string) => {
     ])
 
     systemStore.isImporting = false
-    message.success("Video processing completed.")
+    message.success(t('workspace.messages.processingDone'))
   } catch (e) {
     systemStore.isImporting = false
     loadingMsg.destroy()
-    message.error("Failed to update project with new video")
+    message.error(t('workspace.messages.updateFail'))
   }
 }
 </script>

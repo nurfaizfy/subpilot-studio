@@ -1,20 +1,20 @@
 <template>
   <div class="diagnostics-page p-6">
     <div class="header">
-      <h2>Diagnostic Center</h2>
+      <h2>{{ $t('diagnostics.title') }}</h2>
       <n-space>
         <n-button type="primary" @click="runDiagnostics" :loading="store.isRunning">
-          Run Full Diagnostics
+          {{ $t('diagnostics.runBtn') }}
         </n-button>
         <n-button @click="copyReport" :disabled="store.results.length === 0">
-          Copy Report
+          {{ $t('diagnostics.copyBtn') }}
         </n-button>
       </n-space>
     </div>
 
     <n-card class="mt-4" style="background-color: #1e293b;">
       <template v-if="store.results.length === 0">
-        <n-empty description="No diagnostics run yet. Click 'Run Full Diagnostics' to start." />
+        <n-empty :description="$t('diagnostics.emptyState')" />
       </template>
       <template v-else>
         <div class="diagnostic-grid">
@@ -27,19 +27,19 @@
             </div>
             <div class="diag-body">
               <div v-if="item.version" class="diag-row">
-                <span class="diag-label">Info:</span>
+                <span class="diag-label">{{ $t('diagnostics.labels.info') }}</span>
                 <span class="diag-value">{{ item.version }}</span>
               </div>
               <div v-if="item.path" class="diag-row">
-                <span class="diag-label">Path:</span>
+                <span class="diag-label">{{ $t('diagnostics.labels.path') }}</span>
                 <span class="diag-value path">{{ item.path }}</span>
               </div>
               <div v-if="item.error_msg" class="diag-row error-msg">
-                <span class="diag-label">Error:</span>
+                <span class="diag-label">{{ $t('diagnostics.labels.error') }}</span>
                 <span class="diag-value">{{ item.error_msg }}</span>
               </div>
               <div v-if="item.fix_suggestion" class="diag-row fix-msg">
-                <span class="diag-label">Fix:</span>
+                <span class="diag-label">{{ $t('diagnostics.labels.fix') }}</span>
                 <span class="diag-value">{{ item.fix_suggestion }}</span>
               </div>
             </div>
@@ -53,9 +53,11 @@
 <script setup lang="ts">
 import { NCard, NButton, NSpace, NEmpty, NTag, useMessage } from 'naive-ui'
 import { useDiagnosticsStore } from '../stores/diagnostics'
+import { useI18n } from 'vue-i18n'
 
 const store = useDiagnosticsStore()
 const message = useMessage()
+const { t } = useI18n()
 
 const runDiagnostics = async () => {
   await store.runDiagnostics()
@@ -65,9 +67,9 @@ const copyReport = async () => {
   const report = store.generateReport()
   try {
     await navigator.clipboard.writeText(report)
-    message.success('Report copied to clipboard')
+    message.success(t('diagnostics.messages.copySuccess'))
   } catch (e) {
-    message.error('Failed to copy report: ' + String(e))
+    message.error(t('diagnostics.messages.copyFail') + String(e))
   }
 }
 

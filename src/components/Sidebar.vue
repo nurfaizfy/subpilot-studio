@@ -9,45 +9,45 @@
         <n-icon size="20">
           <DashboardIcon />
         </n-icon>
-        <span>Dashboard</span>
+        <span>{{ $t('nav.dashboard') }}</span>
       </router-link>
       <router-link to="/projects" class="nav-item" active-class="active">
         <n-icon size="20">
           <FolderIcon />
         </n-icon>
-        <span>Projects</span>
+        <span>{{ $t('nav.projects') }}</span>
       </router-link>
       <router-link to="/dictionary" class="nav-item" active-class="active">
         <n-icon size="20">
           <BookIcon />
         </n-icon>
-        <span>Global Dictionary</span>
+        <span>{{ $t('nav.dictionary') }}</span>
       </router-link>
       <router-link to="/styling" class="nav-item" active-class="active">
         <n-icon size="20">
           <ColorPaletteIcon />
         </n-icon>
-        <span>Subtitle Styling</span>
+        <span>{{ $t('nav.styling') }}</span>
       </router-link>
       <router-link to="/automation" class="nav-item" active-class="active">
         <n-icon size="20">
           <FlashIcon />
         </n-icon>
-        <span>Automation</span>
+        <span>{{ $t('nav.automation') }}</span>
       </router-link>
 
       <router-link to="/diagnostics" class="nav-item" active-class="active">
         <n-icon size="20">
           <MedkitIcon />
         </n-icon>
-        <span>Diagnostics</span>
+        <span>{{ $t('nav.diagnostics') }}</span>
       </router-link>
 
       <router-link to="/settings" class="nav-item" active-class="active">
         <n-icon size="20">
           <SettingsIcon />
         </n-icon>
-        <span>Settings</span>
+        <span>{{ $t('nav.settings') }}</span>
       </router-link>
     </nav>
   </aside>

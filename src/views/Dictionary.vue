@@ -1,27 +1,27 @@
 <template>
   <div class="dictionary-view">
     <div class="header">
-      <h2>Global Dictionary</h2>
-      <p class="subtitle">Manage unified translation rules (Overrides AI Translation)</p>
+      <h2>{{ $t('dictionary.title') }}</h2>
+      <p class="subtitle">{{ $t('dictionary.subtitle') }}</p>
     </div>
 
     <n-card class="dict-card">
       <div class="toolbar">
         <n-button type="primary" @click="showAddModal = true">
-          Add Entry
+          {{ $t('dictionary.addEntry') }}
         </n-button>
         
         <div class="right-tools">
           <n-select 
             v-model:value="filterType" 
             :options="typeFilterOptions" 
-            placeholder="Filter by Type"
+            :placeholder="$t('dictionary.filterByType')"
             clearable
             style="width: 200px"
           />
-          <n-input v-model:value="searchQuery" placeholder="Search original or translation..." clearable style="width: 300px" />
-          <n-button @click="importDict">Import JSON</n-button>
-          <n-button @click="exportDict">Export JSON</n-button>
+          <n-input v-model:value="searchQuery" :placeholder="$t('dictionary.search')" clearable style="width: 300px" />
+          <n-button @click="importDict">{{ $t('dictionary.importJson') }}</n-button>
+          <n-button @click="exportDict">{{ $t('dictionary.exportJson') }}</n-button>
         </div>
       </div>
 
@@ -34,27 +34,27 @@
       />
     </n-card>
 
-    <n-modal v-model:show="showAddModal" preset="card" :title="isEditing ? 'Edit Entry' : 'Add Entry'" style="width: 500px">
+    <n-modal v-model:show="showAddModal" preset="card" :title="isEditing ? $t('dictionary.editEntry') : $t('dictionary.addEntry')" style="width: 500px">
       <n-form :model="form" ref="formRef" :rules="rules">
-        <n-form-item label="Original Text" path="original">
-          <n-input v-model:value="form.original" placeholder="e.g. 先生" />
+        <n-form-item :label="$t('dictionary.originalText')" path="original">
+          <n-input v-model:value="form.original" :placeholder="$t('dictionary.originalPlaceholder')" />
         </n-form-item>
         
-        <n-form-item label="Translation" path="translation">
-          <n-input v-model:value="form.translation" placeholder="e.g. Sensei" />
+        <n-form-item :label="$t('dictionary.translation')" path="translation">
+          <n-input v-model:value="form.translation" :placeholder="$t('dictionary.translationPlaceholder')" />
         </n-form-item>
 
-        <n-form-item label="Type" path="entry_type">
+        <n-form-item :label="$t('dictionary.type')" path="entry_type">
           <n-select v-model:value="form.entry_type" :options="typeOptions" />
         </n-form-item>
 
-        <n-form-item label="Priority (Higher overrides lower)" path="priority">
+        <n-form-item :label="$t('dictionary.priority')" path="priority">
           <n-input-number v-model:value="form.priority" :min="1" :max="100" />
         </n-form-item>
 
         <div class="modal-actions">
-          <n-button @click="showAddModal = false">Cancel</n-button>
-          <n-button type="primary" @click="saveEntry" :loading="saving">Save</n-button>
+          <n-button @click="showAddModal = false">{{ $t('dictionary.cancel') }}</n-button>
+          <n-button type="primary" @click="saveEntry" :loading="saving">{{ $t('dictionary.save') }}</n-button>
         </div>
       </n-form>
     </n-modal>
@@ -67,9 +67,12 @@ import {
   NCard, NButton, NDataTable, NModal, NForm, NFormItem, 
   NInput, NSelect, NInputNumber, useMessage, NTag, NSpace, NPopconfirm
 } from 'naive-ui'
+import type { DataTableColumns } from 'naive-ui'
 import { invoke } from '@tauri-apps/api/core'
+import { useI18n } from 'vue-i18n'
 
 const message = useMessage()
+const { t } = useI18n()
 
 interface DictEntry {
   id: string;
@@ -95,10 +98,10 @@ const form = ref({
   priority: 1
 })
 
-const rules = {
-  original: { required: true, message: 'Original text is required', trigger: 'blur' },
-  translation: { required: true, message: 'Translation is required', trigger: 'blur' }
-}
+const rules = computed(() => ({
+  original: { required: true, message: t('dictionary.messages.originalRequired'), trigger: 'blur' },
+  translation: { required: true, message: t('dictionary.messages.translationRequired'), trigger: 'blur' }
+}))
 
 const typeOptions = [
   { label: 'General', value: 'General' },
@@ -118,7 +121,7 @@ const fetchEntries = async () => {
   try {
     entries.value = await invoke('get_dictionary')
   } catch (e: any) {
-    message.error("Failed to load dictionary: " + e)
+    message.error(t('dictionary.messages.loadFail') + e)
   }
   loading.value = false
 }
@@ -144,22 +147,22 @@ const filteredEntries = computed(() => {
 
 const saveEntry = async () => {
   if (!form.value.original || !form.value.translation) {
-    message.warning("Please fill all required fields")
+    message.warning(t('dictionary.messages.fillRequired'))
     return
   }
   saving.value = true
   try {
     if (isEditing.value) {
       await invoke('update_dictionary_entry', { entry: form.value })
-      message.success("Entry updated")
+      message.success(t('dictionary.messages.entryUpdated'))
     } else {
       await invoke('add_dictionary_entry', { entry: form.value })
-      message.success("Entry added")
+      message.success(t('dictionary.messages.entryAdded'))
     }
     showAddModal.value = false
     fetchEntries()
   } catch (e: any) {
-    message.error("Failed to save entry: " + e)
+    message.error(t('dictionary.messages.saveFail') + e)
   }
   saving.value = false
 }
@@ -173,10 +176,10 @@ const editEntry = (row: DictEntry) => {
 const deleteEntry = async (id: string) => {
   try {
     await invoke('delete_dictionary_entry', { id })
-    message.success("Entry deleted")
+    message.success(t('dictionary.messages.entryDeleted'))
     fetchEntries()
   } catch (e: any) {
-    message.error("Failed to delete entry: " + e)
+    message.error(t('dictionary.messages.deleteFail') + e)
   }
 }
 
@@ -190,11 +193,11 @@ watch(showAddModal, (val) => {
   }
 })
 
-const columns: any[] = [
-  { title: 'Original', key: 'original', sorter: 'default' },
-  { title: 'Translation', key: 'translation', sorter: 'default' },
+const columns = computed<DataTableColumns<DictEntry>>(() => [
+  { title: t('dictionary.table.original'), key: 'original', sorter: 'default' },
+  { title: t('dictionary.table.translation'), key: 'translation', sorter: 'default' },
   { 
-    title: 'Type', 
+    title: t('dictionary.table.type'), 
     key: 'entry_type',
     render(row: DictEntry) {
       let type: 'default' | 'primary' | 'info' | 'success' | 'warning' | 'error' = 'default'
@@ -207,27 +210,27 @@ const columns: any[] = [
       return h(NTag, { type, bordered: false, size: 'small' }, { default: () => row.entry_type })
     }
   },
-  { title: 'Priority', key: 'priority', sorter: (a: DictEntry, b: DictEntry) => a.priority - b.priority },
+  { title: t('dictionary.table.priority'), key: 'priority', sorter: (a: DictEntry, b: DictEntry) => a.priority - b.priority },
   {
-    title: 'Actions',
+    title: t('dictionary.table.actions'),
     key: 'actions',
     render(row: DictEntry) {
       return h(NSpace, {}, {
         default: () => [
-          h(NButton, { size: 'small', onClick: () => editEntry(row) }, { default: () => 'Edit' }),
+          h(NButton, { size: 'small', onClick: () => editEntry(row) }, { default: () => t('dictionary.actions.edit') }),
           h(
             NPopconfirm,
             { onPositiveClick: () => deleteEntry(row.id) },
             {
-              trigger: () => h(NButton, { size: 'small', type: 'error', tertiary: true }, { default: () => 'Delete' }),
-              default: () => 'Are you sure you want to delete this entry?'
+              trigger: () => h(NButton, { size: 'small', type: 'error', tertiary: true }, { default: () => t('dictionary.actions.delete') }),
+              default: () => t('dictionary.actions.confirmDelete')
             }
           )
         ]
       })
     }
   }
-]
+])
 
 const exportDict = () => {
   try {
@@ -241,9 +244,9 @@ const exportDict = () => {
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
-    message.success("Dictionary exported successfully")
+    message.success(t('dictionary.messages.exportSuccess'))
   } catch (e: any) {
-    message.error("Export failed: " + e)
+    message.error(t('dictionary.messages.exportFail') + e)
   }
 }
 
@@ -262,7 +265,7 @@ const importDict = () => {
         const importedEntries = JSON.parse(content) as DictEntry[]
         
         if (!Array.isArray(importedEntries)) {
-          throw new Error("Invalid format")
+          throw new Error(t('dictionary.messages.invalidFormat'))
         }
 
         loading.value = true
@@ -282,10 +285,10 @@ const importDict = () => {
           }
         }
         
-        message.success(`Imported ${successCount} entries successfully`)
+        message.success(t('dictionary.messages.importSuccess', { count: successCount }))
         fetchEntries()
       } catch (err: any) {
-        message.error("Import failed: " + err)
+        message.error(t('dictionary.messages.importFail') + err)
         loading.value = false
       }
     }

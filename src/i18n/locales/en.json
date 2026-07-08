@@ -1,0 +1,523 @@
+{
+  "models": {
+    "title": "AI Model Manager",
+    "subtitle": "Download and manage Faster-Whisper models for local speech recognition.",
+    "installed": "Installed",
+    "notInstalled": "Not Installed",
+    "downloadSize": "Download Size:",
+    "diskUsage": "Disk Usage:",
+    "actions": {
+      "pause": "Pause",
+      "resume": "Resume",
+      "cancel": "Cancel",
+      "download": "Download",
+      "delete": "Delete"
+    },
+    "status": {
+      "starting": "Starting download...",
+      "downloading": "Downloading",
+      "paused": "Paused",
+      "verifying": "Verifying checksum...",
+      "extracting": "Extracting files...",
+      "completed": "Completed",
+      "error": "Error downloading"
+    }
+  },
+  "providers": {
+    "title": "AI Provider Manager",
+    "subtitle": "Configure Language Models for translation. Enable Fallback to automatically switch providers if the primary one fails.",
+    "keySet": "Key Set",
+    "missingKey": "Missing Key",
+    "defaultModel": "Default Model:",
+    "fallbackEnabled": "Fallback Enabled:",
+    "configure": "Configure",
+    "testConnection": "Test Connection",
+    "configureTitle": "Configure {name}",
+    "apiUrl": "API URL",
+    "apiKey": "API Key",
+    "apiKeyPlaceholder": "Leave blank to keep current key",
+    "cancel": "Cancel",
+    "saveSecurely": "Save Securely",
+    "messages": {
+      "saveSuccess": "Provider settings saved successfully",
+      "saveFail": "Failed to save. Error: "
+    }
+  },
+  "diagnostics": {
+    "title": "Diagnostic Center",
+    "runBtn": "Run Full Diagnostics",
+    "copyBtn": "Copy Report",
+    "emptyState": "No diagnostics run yet. Click 'Run Full Diagnostics' to start.",
+    "labels": {
+      "info": "Info:",
+      "path": "Path:",
+      "error": "Error:",
+      "fix": "Fix:"
+    },
+    "messages": {
+      "copySuccess": "Report copied to clipboard",
+      "copyFail": "Failed to copy report: "
+    }
+  },
+  "automation": {
+    "title": "Watch Folder Automation",
+    "subtitle": "Automatically process videos dropped into a folder",
+    "rulesTitle": "Automation Rules",
+    "active": "Automation is ACTIVE",
+    "stopped": "Automation is STOPPED",
+    "desc": "When active, SubPilot will check the Watch Folder every 10 seconds.",
+    "watchFolder": "Watch Folder Path",
+    "speechModel": "Speech Recognition Model",
+    "translateTarget": "Auto Translate Target",
+    "logTitle": "Activity Log",
+    "processing": "Processing...",
+    "idle": "Idle",
+    "emptyLog": "No activity yet.",
+    "languages": {
+      "id": "Indonesian",
+      "en": "English"
+    }
+  },
+  "styling": {
+    "title": "Global Subtitle Styles",
+    "newStyle": "New Style",
+    "table": {
+      "name": "Name",
+      "font": "Font",
+      "size": "Size",
+      "actions": "Actions"
+    },
+    "messages": {
+      "duplicated": "Style {name} duplicated",
+      "duplicateFail": "Failed to duplicate style: ",
+      "confirmDeleteTitle": "Confirm Delete",
+      "confirmDeleteContent": "Are you sure you want to delete style \"{name}\"?",
+      "deleteBtn": "Delete",
+      "cancelBtn": "Cancel",
+      "deleted": "Style {name} deleted",
+      "deleteFail": "Failed to delete style: "
+    }
+  },
+  "dictionary": {
+    "title": "Global Dictionary",
+    "subtitle": "Manage unified translation rules (Overrides AI Translation)",
+    "addEntry": "Add Entry",
+    "filterByType": "Filter by Type",
+    "search": "Search original or translation...",
+    "importJson": "Import JSON",
+    "exportJson": "Export JSON",
+    "editEntry": "Edit Entry",
+    "originalText": "Original Text",
+    "originalPlaceholder": "e.g. 先生",
+    "translation": "Translation",
+    "translationPlaceholder": "e.g. Sensei",
+    "type": "Type",
+    "priority": "Priority (Higher overrides lower)",
+    "cancel": "Cancel",
+    "save": "Save",
+    "table": {
+      "original": "Original",
+      "translation": "Translation",
+      "type": "Type",
+      "priority": "Priority",
+      "actions": "Actions"
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "confirmDelete": "Are you sure you want to delete this entry?"
+    },
+    "messages": {
+      "originalRequired": "Original text is required",
+      "translationRequired": "Translation is required",
+      "loadFail": "Failed to load dictionary: ",
+      "fillRequired": "Please fill all required fields",
+      "entryUpdated": "Entry updated",
+      "entryAdded": "Entry added",
+      "saveFail": "Failed to save entry: ",
+      "entryDeleted": "Entry deleted",
+      "deleteFail": "Failed to delete entry: ",
+      "exportSuccess": "Dictionary exported successfully",
+      "exportFail": "Export failed: ",
+      "invalidFormat": "Invalid format",
+      "importSuccess": "Imported {count} entries successfully",
+      "importFail": "Import failed: "
+    }
+  },
+  "encoding": {
+    "settingsTitle": "Export Settings",
+    "exportAction": "Export Action",
+    "encodeVideo": "Encode Video",
+    "exportSubtitles": "Export Subtitles Only",
+    "containerFormat": "Container Format",
+    "subtitleMode": "Subtitle Mode",
+    "softSub": "Soft Sub",
+    "hardSub": "Hard Sub",
+    "videoCodec": "Video Codec",
+    "audioCodec": "Audio Codec",
+    "resolution": "Resolution",
+    "rateControl": "Rate Control",
+    "crfMode": "CRF (Constant Quality)",
+    "bitrateMode": "Manual Bitrate",
+    "frameRate": "Frame Rate (FPS)",
+    "preset": "Preset",
+    "crfLabel": "CRF (Quality: 0-51, lower is better)",
+    "videoBitrateLabel": "Video Bitrate (kbps)",
+    "audioBitrate": "Audio Bitrate",
+    "selectVersion": "Select Subtitle Version",
+    "selectVersionPlaceholder": "Select a subtitle version...",
+    "addToQueue": "Add to Queue",
+    "hardSubWarning": "Hard Subs require re-encoding (cannot use Copy codec).",
+    "exportBtn": "Export Subtitle File",
+    "jobQueueTitle": "Job Queue",
+    "clearDone": "Clear Done",
+    "queueEmpty": "Queue is empty",
+    "actions": {
+      "remove": "Remove",
+      "start": "Start",
+      "cancel": "Cancel"
+    },
+    "options": {
+      "copy": "Copy (No Re-encoding)",
+      "original": "Original",
+      "custom": "Custom",
+      "sameAsSource": "Same as Source"
+    },
+    "messages": {
+      "selectProject": "Please select a project first",
+      "noVideo": "Project has no source video",
+      "selectSubForJob": "Please select a subtitle version to burn or encode",
+      "jobAdded": "Job added to queue",
+      "jobAddFail": "Failed to add job: ",
+      "jobRunning": "A job is already running",
+      "encodingStatus": "Encoding Video...",
+      "startFail": "Failed to start encoder: ",
+      "cancelled": "Encoding cancelled",
+      "cancelFail": "Failed to cancel: ",
+      "encodeSuccess": "Encoding job completed!",
+      "encodeFail": "Encoding job failed!",
+      "selectSubExport": "Please select a subtitle to export!",
+      "exportSuccess": "Subtitle exported successfully",
+      "exportFail": "Failed to export subtitle: "
+    }
+  },
+  "editor": {
+    "noProject": "No project selected. Please open a project first.",
+    "goToProjects": "Go to Projects",
+    "import": "Import Subtitle",
+    "undo": "Undo",
+    "redo": "Redo",
+    "save": "Save",
+    "selectVersion": "Select Version",
+    "deleteVersion": "Delete Subtitle File",
+    "shift": "Shift",
+    "search": "Search...",
+    "detailedTimeline": "Detailed Timeline",
+    "globalStyle": "Global Style:",
+    "applyStyle": "Apply Style",
+    "editStyle": "Edit Style",
+    "newStyle": "New Style",
+    "format": "Format:",
+    "table": {
+      "start": "Start",
+      "end": "End",
+      "style": "Style",
+      "text": "Text",
+      "actions": "Actions"
+    },
+    "actions": {
+      "split": "Split",
+      "mergeNext": "Merge Next",
+      "deleteLine": "Delete Line"
+    },
+    "messages": {
+      "styleApplied": "Style '{name}' applied to all lines",
+      "confirmDeleteTitle": "Confirm Deletion",
+      "confirmDeleteText": "Are you sure you want to delete this subtitle version? This action cannot be undone.",
+      "deleteBtn": "Delete",
+      "cancelBtn": "Cancel",
+      "deleteSuccess": "Subtitle file deleted successfully",
+      "deleteFail": "Failed to delete subtitle file: ",
+      "importSuccess": "Imported subtitle to project successfully",
+      "importFailParse": "Failed to parse subtitle file",
+      "importFail": "Failed to import subtitle",
+      "shifted": "Shifted timing by {amount}s",
+      "saveSuccess": "Subtitles saved",
+      "saveFail": "Failed to save subtitles"
+    }
+  },
+  "workspace": {
+    "noProject": "No Project Selected",
+    "importVideo": "Import Video",
+    "importDesc": "This project has no source video yet. Import one to start generating subtitles.",
+    "selectVideo": "Select Video File",
+    "dropHint": "or drop a video file here",
+    "changeMedia": "Change Media",
+    "tabs": {
+      "overview": "Overview",
+      "aiStudio": "AI Studio",
+      "editor": "Subtitle Editor",
+      "encoding": "Encoding & Export"
+    },
+    "preparing": "Preparing Workspace",
+    "generatingPreviews": "Generating scene previews and analyzing audio tracks...",
+    "loadingMedia": "Loading media info...",
+    "messages": {
+      "waitProcess": "Please wait for the current process to finish before switching tabs.",
+      "failPicker": "Failed to open file picker",
+      "unsupportedFormat": "Unsupported file format. Please drop a video file.",
+      "analyzing": "Analyzing media with FFprobe...",
+      "importSuccess": "Video imported! Processing in background...",
+      "processingDone": "Video processing completed.",
+      "updateFail": "Failed to update project with new video"
+    }
+  },
+  "projects": {
+    "title": "All Projects",
+    "newProject": "New Project",
+    "noProjects": "No projects found",
+    "createFirst": "Create your first project",
+    "source": "Source",
+    "noSource": "No source file",
+    "lastModified": "Last Modified",
+    "open": "Open",
+    "createModalTitle": "Create New Project",
+    "projectName": "Project Name",
+    "enterProjectName": "Enter project name",
+    "projectType": "Project Type",
+    "originalLang": "Original Lang",
+    "targetLang": "Target Lang",
+    "selectLang": "Select Language",
+    "season": "Season",
+    "episode": "Episode",
+    "cancel": "Cancel",
+    "createBtn": "Create Project",
+    "types": {
+      "anime": "Anime",
+      "drama": "Drama",
+      "movie": "Movie",
+      "other": "Other"
+    },
+    "langs": {
+      "japanese": "Japanese",
+      "chinese": "Chinese",
+      "korean": "Korean",
+      "english": "English",
+      "indonesian": "Indonesian"
+    },
+    "actions": {
+      "duplicate": "Duplicate",
+      "delete": "Delete"
+    },
+    "messages": {
+      "opened": "Opened project: {name}",
+      "dupSuccess": "Project duplicated successfully",
+      "dupFail": "Failed to duplicate project",
+      "confirmDelTitle": "Confirm",
+      "confirmDelContent": "Are you sure you want to delete this project?",
+      "delSuccess": "Project deleted",
+      "delFail": "Failed to delete project",
+      "nameReq": "Project name is required",
+      "createSuccess": "Project created successfully",
+      "createFail": "Failed to create project"
+    }
+  },
+  "dashboard": {
+    "welcomeTitle": "Welcome to SubPilot Studio",
+    "welcomeSubtitle": "Your AI-powered subtitle production environment",
+    "createProject": "Create Project",
+    "createProjectDesc": "Start a new subtitle project from scratch",
+    "openProject": "Open Project",
+    "openProjectDesc": "Load an existing SubPilot project",
+    "recentProjects": "Recent Projects",
+    "viewAll": "View All",
+    "columns": {
+      "projectName": "Project Name",
+      "type": "Type",
+      "transcript": "Transcript",
+      "translate": "Translate",
+      "readyToExport": "Ready to Export",
+      "lastModified": "Last Modified"
+    }
+  },
+  "topbar": {
+    "noProject": "No Project Open",
+    "search": "Search..."
+  },
+  "statusbar": {
+    "importing": "Importing Video...",
+    "transcribing": "Transcribing Audio...",
+    "translating": "Translating Subtitles...",
+    "encoding": "Encoding Video...",
+    "encodingPercent": "Encoding: {percent}%"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "dictionary": "Global Dictionary",
+    "styling": "Subtitle Styling",
+    "automation": "Automation",
+    "diagnostics": "Diagnostics",
+    "settings": "Settings"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Configure application paths and integrations",
+    "tabs": {
+      "general": "General Preferences",
+      "models": "Speech Models",
+      "providers": "AI Providers"
+    },
+    "general": {
+      "language": "Language",
+      "theme": "Theme",
+      "defaultWorkspace": "Default Workspace Directory",
+      "autoSave": "Enable Auto-Save in Editor",
+      "autoBackup": "Enable Automatic Backups"
+    },
+    "themes": {
+      "dark": "Dark (SubPilot Default)",
+      "light": "Light",
+      "system": "System"
+    }
+  },
+  "setup": {
+    "title": "Welcome to SubPilot Studio",
+    "subtitle": "Let's get your environment ready before we start.",
+    "ffmpeg": "FFmpeg Engine",
+    "ffmpegDesc": "Required for encoding and video processing",
+    "whisper": "Whisper Engine",
+    "whisperDesc": "Required for AI transcription",
+    "downloading": "Downloading...",
+    "extracting": "Extracting...",
+    "downloadMissing": "Download Missing",
+    "launch": "Launch SubPilot"
+  },
+  "aistudio": {
+    "speechRecognition": "Speech Recognition",
+    "speechSettings": "Speech Recognition Settings",
+    "whisperModel": "Whisper Model",
+    "language": "Language",
+    "computeDevice": "Compute Device",
+    "cpu": "CPU",
+    "gpu": "GPU (CUDA)",
+    "notSupported": "(Not Supported)",
+    "outputFormat": "Output Format",
+    "startTranscription": "Start Transcription",
+    "status": "Status",
+    "running": "Running",
+    "idle": "Idle",
+    "configureAndStart": "Configure settings and click Start",
+    "progress": "Progress",
+    "speed": "Speed",
+    "eta": "ETA",
+    "currentSegment": "Current Segment",
+    "initializing": "Initializing...",
+    "cancel": "Cancel",
+    "resumeRetry": "Resume / Retry",
+    "aiTranslation": "AI Translation",
+    "translationSettings": "Translation Settings",
+    "provider": "Provider",
+    "model": "Model",
+    "sourceSubtitle": "Source Subtitle",
+    "sourceLanguage": "Source Language",
+    "target": "Target",
+    "batchSize": "Batch Size (Lines per request)",
+    "customPrompt": "Custom Prompt / Tone (Optional)",
+    "modelPlaceholder": "e.g. gemini-1.5-flash",
+    "selectSource": "Select source",
+    "promptPlaceholder": "e.g. Use polite and natural language. Avoid literal translation of profanity...",
+    "startTranslation": "Start Batch Translation",
+    "generateFirst": "* Generate or import subtitles first before translating.",
+    "translationQueue": "Translation Queue",
+    "translating": "Translating",
+    "readyToTranslate": "Ready to translate",
+    "totalChunks": "Total Chunks",
+    "completed": "Completed",
+    "failed": "Failed",
+    "chunk": "Chunk",
+    "lines": "Lines",
+    "pending": "Pending",
+    "translatingStatus": "Translating...",
+    "success": "Success",
+    "errorStatus": "Error: {error}",
+    "retry": "Retry",
+    "messages": {
+      "waitProcess": "Please wait for the current process to finish before switching tabs.",
+      "transcriptionComplete": "Transcription completed successfully!",
+      "newTranscriptionReady": "New transcription is ready!",
+      "error": "Error: ",
+      "selectProject": "Please select a project first",
+      "modelNotInstalled": "Model '{model}' is not installed. Please download it from Settings first.",
+      "noSourceVideo": "Project has no source video",
+      "processingTranscription": "Processing transcription...",
+      "analyzingMedia": "Analyzing media...",
+      "transcriptionFailed": "Failed to start transcription: ",
+      "cancelledByUser": "Cancelled by user.",
+      "transcriptionCancelled": "Transcription cancelled.",
+      "selectTarget": "Please select a target project and source subtitle",
+      "translatingSubtitles": "Translating subtitles...",
+      "translationStartFailed": "Failed to start translation: ",
+      "translationSaved": "Translation saved and loaded in Editor!",
+      "translationSaveFailed": "Failed to save translation: "
+    }
+  },
+  "styleEditor": {
+    "editStyle": "Edit Style",
+    "newStyle": "New Style",
+    "tabs": {
+      "basics": "Basics",
+      "colors": "Colors",
+      "layout": "Margins & Alignment",
+      "effects": "Outline & Shadow"
+    },
+    "fields": {
+      "styleName": "Style Name",
+      "fontName": "Font Name",
+      "fontSize": "Font Size",
+      "primary": "Primary",
+      "secondary": "Secondary",
+      "outline": "Outline",
+      "background": "Background",
+      "alignment": "Alignment",
+      "marginL": "Margin L",
+      "marginR": "Margin R",
+      "marginV": "Margin V",
+      "shadow": "Shadow",
+      "bold": "Bold",
+      "italic": "Italic",
+      "underline": "Underline",
+      "strikeout": "Strikeout"
+    },
+    "placeholders": {
+      "styleName": "e.g. Dialogue",
+      "fontName": "e.g. Arial"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "messages": {
+      "nameRequired": "Style name is required",
+      "fontRequired": "Font name is required",
+      "saveSuccess": "Style {action} successfully",
+      "saveFailed": "Failed to save style: "
+    }
+  },
+  "mediaInfo": {
+    "empty": "No media analyzed yet",
+    "title": "Media Information",
+    "format": "FORMAT / CONTAINER",
+    "size": "FILE SIZE",
+    "videoCodec": "VIDEO CODEC",
+    "resolution": "RESOLUTION",
+    "aspectRatio": "ASPECT RATIO",
+    "frameRate": "FRAME RATE",
+    "bitrate": "BITRATE",
+    "duration": "DURATION",
+    "audioTracks": "Audio Tracks ({count})",
+    "noAudio": "No audio tracks",
+    "subtitleTracks": "Subtitle Tracks ({count})",
+    "noSubtitles": "No subtitle tracks"
+  }
+}

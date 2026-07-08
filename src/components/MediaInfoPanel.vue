@@ -1,7 +1,7 @@
 <template>
   <div class="media-info-panel">
     <div v-if="!info" class="empty-state">
-      <n-empty description="No media analyzed yet" />
+      <n-empty :description="$t('mediaInfo.empty')" />
     </div>
 
     <div v-else class="info-content">
@@ -9,40 +9,40 @@
         <n-icon size="20" class="header-icon">
           <CodeSlashIcon />
         </n-icon>
-        <h3 class="header-title">Media Information</h3>
+        <h3 class="header-title">{{ $t('mediaInfo.title') }}</h3>
       </div>
 
       <div class="info-grid">
         <div class="info-card">
-          <span class="label">FORMAT / CONTAINER</span>
+          <span class="label">{{ $t('mediaInfo.format') }}</span>
           <span class="value font-mono">{{ info.format_name.toUpperCase() }}</span>
         </div>
         <div class="info-card">
-          <span class="label">FILE SIZE</span>
+          <span class="label">{{ $t('mediaInfo.size') }}</span>
           <span class="value font-mono">{{ formatBytes(info.file_size_bytes) }}</span>
         </div>
         <div class="info-card">
-          <span class="label">VIDEO CODEC</span>
+          <span class="label">{{ $t('mediaInfo.videoCodec') }}</span>
           <span class="value font-mono">{{ info.video_codec.toUpperCase() }}</span>
         </div>
         <div class="info-card">
-          <span class="label">RESOLUTION</span>
+          <span class="label">{{ $t('mediaInfo.resolution') }}</span>
           <span class="value font-mono">{{ info.width }}x{{ info.height }}</span>
         </div>
         <div class="info-card">
-          <span class="label">ASPECT RATIO</span>
+          <span class="label">{{ $t('mediaInfo.aspectRatio') }}</span>
           <span class="value font-mono">{{ aspectRatio }}</span>
         </div>
         <div class="info-card">
-          <span class="label">FRAME RATE</span>
+          <span class="label">{{ $t('mediaInfo.frameRate') }}</span>
           <span class="value font-mono">{{ formattedFps }} fps</span>
         </div>
         <div class="info-card">
-          <span class="label">BITRATE</span>
+          <span class="label">{{ $t('mediaInfo.bitrate') }}</span>
           <span class="value font-mono">{{ formatBitrate(info.bit_rate) }}</span>
         </div>
         <div class="info-card">
-          <span class="label">DURATION</span>
+          <span class="label">{{ $t('mediaInfo.duration') }}</span>
           <span class="value font-mono">{{ formattedDuration }}</span>
         </div>
       </div>
@@ -50,7 +50,7 @@
       <n-divider style="margin: 24px 0; background-color: #334155;" />
 
       <div class="tracks-section">
-        <h4 class="track-header">Audio Tracks ({{ info.audio_tracks.length }})</h4>
+        <h4 class="track-header">{{ $t('mediaInfo.audioTracks', { count: info.audio_tracks.length }) }}</h4>
         <div v-if="info.audio_tracks.length > 0" class="track-list">
           <div v-for="track in info.audio_tracks" :key="track.index" class="track-badge">
             <n-icon size="14" class="track-icon">
@@ -61,10 +61,10 @@
           </div>
         </div>
         <div v-else class="no-tracks">
-          <span>No audio tracks</span>
+          <span>{{ $t('mediaInfo.noAudio') }}</span>
         </div>
 
-        <h4 class="track-header mt-4">Subtitle Tracks ({{ info.subtitle_tracks.length }})</h4>
+        <h4 class="track-header mt-4">{{ $t('mediaInfo.subtitleTracks', { count: info.subtitle_tracks.length }) }}</h4>
         <div v-if="info.subtitle_tracks.length > 0" class="track-list">
           <div v-for="track in info.subtitle_tracks" :key="track.index" class="track-badge">
             <n-icon size="14" class="track-icon">
@@ -74,7 +74,7 @@
           </div>
         </div>
         <div v-else class="no-tracks">
-          <span>No subtitle tracks</span>
+          <span>{{ $t('mediaInfo.noSubtitles') }}</span>
         </div>
       </div>
     </div>

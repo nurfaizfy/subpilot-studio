@@ -1,9 +1,9 @@
 <template>
   <div class="editor-view">
     <div v-if="!projectStore.currentProject" class="empty-state-wrapper">
-      <n-empty description="No project selected. Please open a project first.">
+      <n-empty :description="$t('editor.noProject')">
         <template #extra>
-          <n-button type="primary" @click="$router.push('/projects')">Go to Projects</n-button>
+          <n-button type="primary" @click="$router.push('/projects')">{{ $t('editor.goToProjects') }}</n-button>
         </template>
       </n-empty>
     </div>
@@ -14,24 +14,24 @@
           <div class="toolbar-section">
             <div class="tool-group">
               <n-button size="small" type="primary" ghost @click="importSubtitle" :loading="isSaving"
-                title="Import Subtitle">
+                :title="$t('editor.import')">
                 <template #icon><n-icon>
                     <ImportIcon />
                   </n-icon></template>
               </n-button>
               <n-button size="small" @click="subtitleStore.undo" :disabled="subtitleStore.historyIndex <= 0"
-                title="Undo">
+                :title="$t('editor.undo')">
                 <template #icon><n-icon>
                     <UndoIcon />
                   </n-icon></template>
               </n-button>
               <n-button size="small" @click="subtitleStore.redo"
-                :disabled="subtitleStore.historyIndex >= subtitleStore.historyLength - 1" title="Redo">
+                :disabled="subtitleStore.historyIndex >= subtitleStore.historyLength - 1" :title="$t('editor.redo')">
                 <template #icon><n-icon>
                     <RedoIcon />
                   </n-icon></template>
               </n-button>
-              <n-button size="small" type="primary" @click="manualSave" :loading="isSaving" title="Save">
+              <n-button size="small" type="primary" @click="manualSave" :loading="isSaving" :title="$t('editor.save')">
                 <template #icon><n-icon>
                     <SaveIcon />
                   </n-icon></template>
@@ -42,9 +42,9 @@
 
             <div class="tool-group">
               <n-select size="small" style="width: 200px" v-model:value="selectedVersionPath" :options="versionOptions"
-                placeholder="Select Version" @update:value="onVersionSelected" />
+                :placeholder="$t('editor.selectVersion')" @update:value="onVersionSelected" />
               <n-button size="small" type="error" ghost @click="deleteSubtitleFile" :disabled="!selectedVersionPath"
-                title="Delete Subtitle File">
+                :title="$t('editor.deleteVersion')">
                 <template #icon><n-icon>
                     <TrashIcon />
                   </n-icon></template>
@@ -56,11 +56,11 @@
             <div class="tool-group">
               <n-input-number size="small" v-model:value="shiftAmount" :step="0.5" placeholder="0.0"
                 style="width: 100px" />
-              <n-button size="small" type="primary" secondary @click="applyShift">Shift</n-button>
+              <n-button size="small" type="primary" secondary @click="applyShift">{{ $t('editor.shift') }}</n-button>
             </div>
 
             <div class="tool-group" style="margin-left: auto;">
-              <n-input size="small" v-model:value="searchQuery" placeholder="Search..." clearable
+              <n-input size="small" v-model:value="searchQuery" :placeholder="$t('editor.search')" clearable
                 style="width: 200px" />
             </div>
           </div>
@@ -117,7 +117,7 @@
             </div>
 
             <div class="zoom-timeline-header">
-              <span class="zoom-label">Detailed Timeline</span>
+              <span class="zoom-label">{{ $t('editor.detailedTimeline') }}</span>
               <div class="zoom-controls">
                 <n-button size="tiny" tertiary @click="zoomScale = Math.max(10, zoomScale - 50)">-</n-button>
                 <span class="zoom-value">{{ Math.round(zoomScale) }}px/s</span>
@@ -152,27 +152,26 @@
           <div v-if="subtitleStore.format === 'ass'" class="ass-toolbar"
             style="flex-direction: column; align-items: flex-start; gap: 12px;">
             <div class="ass-toolbar-group">
-              <span class="ass-toolbar-label">Global Style:</span>
+              <span class="ass-toolbar-label">{{ $t('editor.globalStyle') }}</span>
               <n-select size="small" :options="globalStyleOptions" v-model:value="selectedGlobalStyle"
                 style="width: 160px" placeholder="Select style..." />
-              <n-button size="small" type="primary" @click="applyGlobalStyle" :disabled="!selectedGlobalStyle">Apply
-                Style</n-button>
+              <n-button size="small" type="primary" @click="applyGlobalStyle" :disabled="!selectedGlobalStyle">{{ $t('editor.applyStyle') }}</n-button>
               <n-button size="small" tertiary @click="openStyleEditor" :disabled="!selectedGlobalStyle">
                 <template #icon><n-icon>
                     <EditIcon />
                   </n-icon></template>
-                Edit Style
+                {{ $t('editor.editStyle') }}
               </n-button>
               <n-button size="small" tertiary @click="openNewStyleEditor">
                 <template #icon><n-icon>
                     <AddIcon />
                   </n-icon></template>
-                New Style
+                {{ $t('editor.newStyle') }}
               </n-button>
             </div>
 
             <div class="ass-toolbar-group">
-              <span class="ass-toolbar-label">Format:</span>
+              <span class="ass-toolbar-label">{{ $t('editor.format') }}</span>
               <n-button size="small" strong secondary @mousedown.prevent="applyInlineTag('b')" title="Bold (Ctrl+B)">
                 <strong style="font-family: serif; font-size: 14px">B</strong>
               </n-button>
@@ -191,11 +190,11 @@
           <div class="table-section">
             <div class="table-header">
               <div class="col-id">#</div>
-              <div class="col-time">Start</div>
-              <div class="col-time">End</div>
-              <div class="col-style" v-if="subtitleStore.format === 'ass'">Style</div>
-              <div class="col-text">Text</div>
-              <div class="col-actions">Actions</div>
+              <div class="col-time">{{ $t('editor.table.start') }}</div>
+              <div class="col-time">{{ $t('editor.table.end') }}</div>
+              <div class="col-style" v-if="subtitleStore.format === 'ass'">{{ $t('editor.table.style') }}</div>
+              <div class="col-text">{{ $t('editor.table.text') }}</div>
+              <div class="col-actions">{{ $t('editor.table.actions') }}</div>
             </div>
 
             <div class="table-body">
@@ -228,17 +227,17 @@
                     </div>
 
                     <div class="col-actions">
-                      <n-button size="tiny" tertiary @click.stop="subtitleStore.splitLine(line.id)" title="Split">
+                      <n-button size="tiny" tertiary @click.stop="subtitleStore.splitLine(line.id)" :title="$t('editor.actions.split')">
                         <template #icon><n-icon>
                             <CutIcon />
                           </n-icon></template>
                       </n-button>
-                      <n-button size="tiny" tertiary @click.stop="subtitleStore.mergeLine(line.id)" title="Merge Next">
+                      <n-button size="tiny" tertiary @click.stop="subtitleStore.mergeLine(line.id)" :title="$t('editor.actions.mergeNext')">
                         <template #icon><n-icon>
                             <LinkIcon />
                           </n-icon></template>
                       </n-button>
-                      <n-button size="tiny" type="error" tertiary @click.stop="deleteLine(line.id)" title="Delete Line">
+                      <n-button size="tiny" type="error" tertiary @click.stop="deleteLine(line.id)" :title="$t('editor.actions.deleteLine')">
                         <template #icon><n-icon>
                             <TrashIcon />
                           </n-icon></template>
@@ -286,12 +285,14 @@ import { SubtitleManager } from '../services/subtitleManager'
 import type { SubtitleVersion } from '../services/subtitleManager'
 import { MediaService } from '../services/mediaService'
 import { useStylesStore } from '../stores/styles'
+import { useI18n } from 'vue-i18n'
 
 const message = useMessage()
 const dialog = useDialog()
 const projectStore = useProjectStore()
 const subtitleStore = useSubtitleStore()
 const stylesStore = useStylesStore()
+const { t } = useI18n()
 
 onMounted(async () => {
   await stylesStore.loadStyles()
@@ -311,7 +312,7 @@ const applyGlobalStyle = () => {
     line.style = selectedGlobalStyle.value
   }
   triggerAutoSave()
-  message.success(`Style '${selectedGlobalStyle.value}' applied to all lines`)
+  message.success(t('editor.messages.styleApplied', { name: selectedGlobalStyle.value }))
 }
 
 const selectedVersionPath = ref<string | null>(null)
@@ -396,21 +397,21 @@ const deleteSubtitleFile = () => {
   if (!selectedVersionPath.value) return
 
   dialog.warning({
-    title: 'Confirm Deletion',
-    content: 'Are you sure you want to delete this subtitle version? This action cannot be undone.',
-    positiveText: 'Delete',
-    negativeText: 'Cancel',
+    title: t('editor.messages.confirmDeleteTitle'),
+    content: t('editor.messages.confirmDeleteText'),
+    positiveText: t('editor.messages.deleteBtn'),
+    negativeText: t('editor.messages.cancelBtn'),
     onPositiveClick: async () => {
       try {
         if (!selectedVersionPath.value) return
         await invoke('delete_file', { path: selectedVersionPath.value })
-        message.success("Subtitle file deleted successfully")
+        message.success(t('editor.messages.deleteSuccess'))
         await loadSubtitleVersions()
         if (availableVersions.value.length === 0) {
           subtitleStore.lines = []
         }
       } catch (e) {
-        message.error("Failed to delete subtitle file: " + e)
+        message.error(t('editor.messages.deleteFail') + e)
       }
     }
   })
@@ -528,13 +529,13 @@ const importSubtitle = async () => {
 
       const success = await subtitleStore.loadFromFile(outPath)
       if (success) {
-        message.success(`Imported subtitle to project successfully`)
+        message.success(t('editor.messages.importSuccess'))
       } else {
-        message.error(`Failed to parse subtitle file`)
+        message.error(t('editor.messages.importFailParse'))
       }
     }
   } catch (e) {
-    message.error("Failed to import subtitle")
+    message.error(t('editor.messages.importFail'))
     console.error(e)
   }
 }
@@ -809,7 +810,7 @@ const updateTime = (id: string, field: 'start' | 'end', val: string) => {
 const applyShift = () => {
   if (shiftAmount.value === 0) return
   subtitleStore.shiftTiming(shiftAmount.value)
-  message.success(`Shifted timing by ${shiftAmount.value}s`)
+  message.success(t('editor.messages.shifted', { amount: shiftAmount.value }))
   triggerAutoSave()
 }
 
@@ -825,8 +826,8 @@ const manualSave = async () => {
   isSaving.value = true
   const success = await subtitleStore.saveToFile()
   isSaving.value = false
-  if (success) message.success('Subtitles saved')
-  else message.error('Failed to save subtitles')
+  if (success) message.success(t('editor.messages.saveSuccess'))
+  else message.error(t('editor.messages.saveFail'))
 }
 
 const handleKeydown = (e: KeyboardEvent) => {

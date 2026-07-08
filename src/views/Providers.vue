@@ -1,8 +1,8 @@
 <template>
   <div class="providers-view">
     <div class="header">
-      <h2>AI Provider Manager</h2>
-      <p>Configure Language Models for translation. Enable Fallback to automatically switch providers if the primary one fails.</p>
+      <h2>{{ $t('providers.title') }}</h2>
+      <p>{{ $t('providers.subtitle') }}</p>
     </div>
 
     <div class="provider-grid">
@@ -11,18 +11,18 @@
           <div class="card-title">
             <span class="name">{{ provider.name }}</span>
             <n-tag :type="provider.has_key ? 'success' : 'error'" size="small">
-              {{ provider.has_key ? 'Key Set' : 'Missing Key' }}
+              {{ provider.has_key ? $t('providers.keySet') : $t('providers.missingKey') }}
             </n-tag>
           </div>
         </template>
         
         <div class="card-content">
           <div class="info-row">
-            <span class="label">Default Model:</span>
+            <span class="label">{{ $t('providers.defaultModel') }}</span>
             <span class="value">{{ provider.default_model }}</span>
           </div>
           <div class="info-row">
-            <span class="label">Fallback Enabled:</span>
+            <span class="label">{{ $t('providers.fallbackEnabled') }}</span>
             <n-switch :value="provider.is_fallback" @update:value="val => toggleFallback(provider, val)" size="small" />
           </div>
           
@@ -37,7 +37,7 @@
         <template #footer>
           <div class="actions">
             <n-button type="default" block @click="openConfig(provider)">
-              Configure
+              {{ $t('providers.configure') }}
             </n-button>
             <n-button 
               type="primary" 
@@ -46,7 +46,7 @@
               :loading="isTesting[provider.id]"
               @click="testProvider(provider.id)"
             >
-              Test Connection
+              {{ $t('providers.testConnection') }}
             </n-button>
           </div>
         </template>
@@ -56,33 +56,33 @@
     <n-modal v-model:show="showConfig">
       <n-card
         style="width: 500px"
-        :title="`Configure ${editingProvider?.name}`"
+        :title="$t('providers.configureTitle', { name: editingProvider?.name })"
         :bordered="false"
         size="huge"
         role="dialog"
         aria-modal="true"
       >
         <n-form v-if="editingProvider">
-          <n-form-item label="API URL">
+          <n-form-item :label="$t('providers.apiUrl')">
             <n-input v-model:value="editForm.api_url" />
           </n-form-item>
-          <n-form-item label="Default Model">
+          <n-form-item :label="$t('providers.defaultModel')">
             <n-input v-model:value="editForm.default_model" />
           </n-form-item>
-          <n-form-item label="API Key">
+          <n-form-item :label="$t('providers.apiKey')">
             <n-input 
               v-model:value="apiKeyInput" 
               type="password" 
               show-password-on="click" 
-              placeholder="Leave blank to keep current key"
+              :placeholder="$t('providers.apiKeyPlaceholder')"
             />
           </n-form-item>
         </n-form>
         
         <template #footer>
           <div style="display: flex; justify-content: flex-end; gap: 12px;">
-            <n-button @click="showConfig = false">Cancel</n-button>
-            <n-button type="primary" @click="saveConfig" :loading="isSaving">Save Securely</n-button>
+            <n-button @click="showConfig = false">{{ $t('providers.cancel') }}</n-button>
+            <n-button type="primary" @click="saveConfig" :loading="isSaving">{{ $t('providers.saveSecurely') }}</n-button>
           </div>
         </template>
       </n-card>
@@ -95,9 +95,11 @@
 import { ref, onMounted } from 'vue'
 import { NCard, NTag, NButton, NSwitch, NModal, NForm, NFormItem, NInput, useMessage } from 'naive-ui'
 import { useProvidersStore, type ProviderConfig, type TestResult } from '../stores/providers'
+import { useI18n } from 'vue-i18n'
 
 const providersStore = useProvidersStore()
 const message = useMessage()
+const { t } = useI18n()
 
 const testResults = ref<Record<string, TestResult>>({})
 const isTesting = ref<Record<string, boolean>>({})
@@ -151,9 +153,9 @@ const saveConfig = async () => {
   try {
     await providersStore.saveProvider(updatedConfig, apiKeyInput.value)
     showConfig.value = false
-    message.success('Provider settings saved successfully')
+    message.success(t('providers.messages.saveSuccess'))
   } catch(e) {
-    message.error('Failed to save. Error: ' + e)
+    message.error(t('providers.messages.saveFail') + e)
   }
   
   isSaving.value = false

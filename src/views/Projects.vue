@@ -1,21 +1,21 @@
 <template>
   <div class="projects-view">
     <div class="header">
-      <h2>All Projects</h2>
+      <h2>{{ $t('projects.title') }}</h2>
       <n-button type="primary" @click="showCreateModal = true">
         <template #icon>
           <n-icon>
             <AddIcon />
           </n-icon>
         </template>
-        New Project
+        {{ $t('projects.newProject') }}
       </n-button>
     </div>
 
     <div class="projects-container">
-      <n-empty v-if="projectStore.recentProjects.length === 0" description="No projects found">
+      <n-empty v-if="projectStore.recentProjects.length === 0" :description="$t('projects.noProjects')">
         <template #extra>
-          <n-button size="small" @click="showCreateModal = true">Create your first project</n-button>
+          <n-button size="small" @click="showCreateModal = true">{{ $t('projects.createFirst') }}</n-button>
         </template>
       </n-empty>
 
@@ -31,12 +31,12 @@
           </template>
 
           <h3 class="proj-name">{{ proj.name }}</h3>
-          <p class="proj-meta">Source: {{ proj.source_video || 'No source file' }}</p>
-          <p class="proj-meta">Last Modified: {{ new Date(proj.last_modified).toLocaleDateString() }}</p>
+          <p class="proj-meta">{{ $t('projects.source') }}: {{ proj.source_video || $t('projects.noSource') }}</p>
+          <p class="proj-meta">{{ $t('projects.lastModified') }}: {{ new Date(proj.last_modified).toLocaleDateString() }}</p>
 
           <template #action>
             <div class="card-actions">
-              <n-button size="small" type="primary" ghost @click="openProject(proj)">Open</n-button>
+              <n-button size="small" type="primary" ghost @click="openProject(proj)">{{ $t('projects.open') }}</n-button>
               <n-dropdown :options="dropdownOptions" @select="(key) => handleDropdownSelect(key, proj.id)">
                 <n-button size="small" circle ghost>
                   <template #icon><n-icon>
@@ -50,31 +50,31 @@
       </div>
     </div>
 
-    <n-modal v-model:show="showCreateModal" preset="card" style="width: 600px" title="Create New Project">
+    <n-modal v-model:show="showCreateModal" preset="card" style="width: 600px" :title="$t('projects.createModalTitle')">
       <n-form :model="formData" label-placement="left" label-width="120">
-        <n-form-item label="Project Name" path="name">
-          <n-input v-model:value="formData.name" placeholder="Enter project name" />
+        <n-form-item :label="$t('projects.projectName')" path="name">
+          <n-input v-model:value="formData.name" :placeholder="$t('projects.enterProjectName')" />
         </n-form-item>
 
-        <n-form-item label="Project Type" path="project_type">
+        <n-form-item :label="$t('projects.projectType')" path="project_type">
           <n-select v-model:value="formData.project_type" :options="typeOptions" />
         </n-form-item>
 
-        <n-form-item label="Original Lang" path="original_language">
+        <n-form-item :label="$t('projects.originalLang')" path="original_language">
           <n-select filterable v-model:value="formData.original_language" :options="originalLanguageOptions"
-            placeholder="Select Language" />
+            :placeholder="$t('projects.selectLang')" />
         </n-form-item>
 
-        <n-form-item label="Target Lang" path="target_language">
+        <n-form-item :label="$t('projects.targetLang')" path="target_language">
           <n-select filterable v-model:value="formData.target_language" :options="targetLanguageOptions"
-            placeholder="Select Language" />
+            :placeholder="$t('projects.selectLang')" />
         </n-form-item>
 
         <div v-if="formData.project_type === 'Anime' || formData.project_type === 'Drama'" class="season-episode">
-          <n-form-item label="Season">
+          <n-form-item :label="$t('projects.season')">
             <n-input-number v-model:value="formData.season" :min="1" />
           </n-form-item>
-          <n-form-item label="Episode">
+          <n-form-item :label="$t('projects.episode')">
             <n-input-number v-model:value="formData.episode" :min="1" />
           </n-form-item>
         </div>
@@ -82,8 +82,8 @@
 
       <template #footer>
         <div style="display: flex; justify-content: flex-end; gap: 12px;">
-          <n-button @click="showCreateModal = false">Cancel</n-button>
-          <n-button type="primary" @click="submitCreate">Create Project</n-button>
+          <n-button @click="showCreateModal = false">{{ $t('projects.cancel') }}</n-button>
+          <n-button type="primary" @click="submitCreate">{{ $t('projects.createBtn') }}</n-button>
         </div>
       </template>
     </n-modal>
@@ -91,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import {
   NButton, NIcon, NEmpty, NCard, NDropdown,
   NModal, NForm, NFormItem, NInput, NSelect, NInputNumber,
@@ -104,11 +104,13 @@ import {
 } from '@vicons/ionicons5'
 import { useProjectStore } from '../stores/project'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 const message = useMessage()
 const dialog = useDialog()
 const router = useRouter()
 const projectStore = useProjectStore()
+const { t } = useI18n()
 
 const showCreateModal = ref(false)
 
@@ -122,28 +124,28 @@ const formData = ref({
   source_video: ''
 })
 
-const typeOptions = [
-  { label: 'Anime', value: 'Anime' },
-  { label: 'Drama', value: 'Drama' },
-  { label: 'Movie', value: 'Movie' },
-  { label: 'Other', value: 'Other' }
-]
+const typeOptions = computed(() => [
+  { label: t('projects.types.anime'), value: 'Anime' },
+  { label: t('projects.types.drama'), value: 'Drama' },
+  { label: t('projects.types.movie'), value: 'Movie' },
+  { label: t('projects.types.other'), value: 'Other' }
+])
 
-const originalLanguageOptions = [
-  { label: 'Japanese', value: 'Japanese' },
-  { label: 'Chinese', value: 'Chinese' },
-  { label: 'Korean', value: 'Korean' }
-]
+const originalLanguageOptions = computed(() => [
+  { label: t('projects.langs.japanese'), value: 'Japanese' },
+  { label: t('projects.langs.chinese'), value: 'Chinese' },
+  { label: t('projects.langs.korean'), value: 'Korean' }
+])
 
-const targetLanguageOptions = [
-  { label: 'English', value: 'English' },
-  { label: 'Indonesian', value: 'Indonesian' }
-]
+const targetLanguageOptions = computed(() => [
+  { label: t('projects.langs.english'), value: 'English' },
+  { label: t('projects.langs.indonesian'), value: 'Indonesian' }
+])
 
-const dropdownOptions = [
-  { label: 'Duplicate', key: 'duplicate' },
-  { label: 'Delete', key: 'delete' }
-]
+const dropdownOptions = computed(() => [
+  { label: t('projects.actions.duplicate'), key: 'duplicate' },
+  { label: t('projects.actions.delete'), key: 'delete' }
+])
 
 onMounted(async () => {
   await projectStore.fetchProjects()
@@ -151,7 +153,7 @@ onMounted(async () => {
 
 const openProject = (proj: any) => {
   projectStore.setProject(proj)
-  message.success(`Opened project: ${proj.name}`)
+  message.success(t('projects.messages.opened', { name: proj.name }))
   router.push(`/project/${proj.id}`)
 }
 
@@ -159,22 +161,22 @@ const handleDropdownSelect = async (key: string, id: string) => {
   if (key === 'duplicate') {
     try {
       await projectStore.copyProject(id)
-      message.success("Project duplicated successfully")
+      message.success(t('projects.messages.dupSuccess'))
     } catch (e) {
-      message.error("Failed to duplicate project")
+      message.error(t('projects.messages.dupFail'))
     }
   } else if (key === 'delete') {
     dialog.warning({
-      title: 'Confirm',
-      content: 'Are you sure you want to delete this project?',
-      positiveText: 'Delete',
-      negativeText: 'Cancel',
+      title: t('projects.messages.confirmDelTitle'),
+      content: t('projects.messages.confirmDelContent'),
+      positiveText: t('projects.actions.delete'),
+      negativeText: t('projects.cancel'),
       onPositiveClick: async () => {
         try {
           await projectStore.removeProject(id)
-          message.success("Project deleted")
+          message.success(t('projects.messages.delSuccess'))
         } catch (e) {
-          message.error("Failed to delete project")
+          message.error(t('projects.messages.delFail'))
         }
       }
     })
@@ -184,14 +186,14 @@ const handleDropdownSelect = async (key: string, id: string) => {
 
 const submitCreate = async () => {
   if (!formData.value.name) {
-    message.error("Project name is required")
+    message.error(t('projects.messages.nameReq'))
     return
   }
 
   try {
     await projectStore.createNewProject(formData.value)
     showCreateModal.value = false
-    message.success("Project created successfully")
+    message.success(t('projects.messages.createSuccess'))
 
     formData.value = {
       name: '',
@@ -203,7 +205,7 @@ const submitCreate = async () => {
       source_video: ''
     }
   } catch (e) {
-    message.error("Failed to create project")
+    message.error(t('projects.messages.createFail'))
   }
 }
 </script>

@@ -6,12 +6,12 @@
         <span class="project-name">{{ projectStore.currentProject.name }}</span>
       </div>
       <div v-else class="project-info">
-        <span class="no-project">No Project Open</span>
+        <span class="no-project">{{ $t('topbar.noProject') }}</span>
       </div>
     </div>
     
     <div class="right-section">
-      <n-input placeholder="Search..." round clearable>
+      <n-input :placeholder="$t('topbar.search')" round clearable>
         <template #prefix>
           <n-icon><SearchIcon /></n-icon>
         </template>

@@ -1,20 +1,20 @@
 <template>
   <div class="encoding-view">
     <div class="content-grid">
-      <n-card class="config-card" title="Export Settings">
+      <n-card class="config-card" :title="$t('encoding.settingsTitle')">
         <n-form :model="config" label-placement="top">
           <div class="settings-grid">
-            <n-form-item label="Export Action" class="full-width">
+            <n-form-item :label="$t('encoding.exportAction')" class="full-width">
               <n-radio-group v-model:value="config.exportMode" name="exportMode">
                 <n-space>
-                  <n-radio value="video">Encode Video</n-radio>
-                  <n-radio value="subtitle">Export Subtitles Only</n-radio>
+                  <n-radio value="video">{{ $t('encoding.encodeVideo') }}</n-radio>
+                  <n-radio value="subtitle">{{ $t('encoding.exportSubtitles') }}</n-radio>
                 </n-space>
               </n-radio-group>
             </n-form-item>
 
             <template v-if="config.exportMode === 'video'">
-              <n-form-item label="Container Format">
+              <n-form-item :label="$t('encoding.containerFormat')">
                 <n-radio-group v-model:value="config.format" name="format">
                   <n-space>
                     <n-radio value="mp4">MP4</n-radio>
@@ -23,25 +23,25 @@
                 </n-radio-group>
               </n-form-item>
 
-              <n-form-item label="Subtitle Mode">
+              <n-form-item :label="$t('encoding.subtitleMode')">
                 <n-radio-group v-model:value="config.subMode" name="subMode">
                   <n-space>
-                    <n-radio value="soft" :disabled="config.format !== 'mkv'">Soft Sub</n-radio>
-                    <n-radio value="hard">Hard Sub</n-radio>
+                    <n-radio value="soft" :disabled="config.format !== 'mkv'">{{ $t('encoding.softSub') }}</n-radio>
+                    <n-radio value="hard">{{ $t('encoding.hardSub') }}</n-radio>
                   </n-space>
                 </n-radio-group>
               </n-form-item>
 
-              <n-form-item label="Video Codec">
+              <n-form-item :label="$t('encoding.videoCodec')">
                 <n-select v-model:value="config.videoCodec" :options="videoCodecOptions" />
               </n-form-item>
 
-              <n-form-item label="Audio Codec">
+              <n-form-item :label="$t('encoding.audioCodec')">
                 <n-select v-model:value="config.audioCodec" :options="audioCodecOptions" />
               </n-form-item>
 
               <template v-if="config.videoCodec !== 'copy'">
-                <n-form-item label="Resolution">
+                <n-form-item :label="$t('encoding.resolution')">
                   <n-space style="width: 100%" align="center">
                     <n-select v-model:value="config.resolution" :options="resolutionOptions" style="min-width: 120px;" />
                     <template v-if="config.resolution === 'custom'">
@@ -52,43 +52,43 @@
                   </n-space>
                 </n-form-item>
 
-                <n-form-item label="Rate Control">
+                <n-form-item :label="$t('encoding.rateControl')">
                   <n-radio-group v-model:value="config.rateControl" name="rateControl">
                     <n-space>
-                      <n-radio value="crf">CRF (Constant Quality)</n-radio>
-                      <n-radio value="bitrate">Manual Bitrate</n-radio>
+                      <n-radio value="crf">{{ $t('encoding.crfMode') }}</n-radio>
+                      <n-radio value="bitrate">{{ $t('encoding.bitrateMode') }}</n-radio>
                     </n-space>
                   </n-radio-group>
                 </n-form-item>
 
-                <n-form-item label="Frame Rate (FPS)">
+                <n-form-item :label="$t('encoding.frameRate')">
                   <n-select v-model:value="config.outputFps" :options="outputFpsOptions" />
                 </n-form-item>
 
-                <n-form-item label="Preset">
+                <n-form-item :label="$t('encoding.preset')">
                   <n-select v-model:value="config.preset" :options="presetOptions" />
                 </n-form-item>
 
-                <n-form-item v-if="config.rateControl === 'crf'" label="CRF (Quality: 0-51, lower is better)">
+                <n-form-item v-if="config.rateControl === 'crf'" :label="$t('encoding.crfLabel')">
                   <n-slider v-model:value="config.crf" :step="1" :max="51" :min="0" />
                   <span style="margin-left: 12px; min-width: 30px">{{ config.crf }}</span>
                 </n-form-item>
 
-                <n-form-item v-else label="Video Bitrate (kbps)">
+                <n-form-item v-else :label="$t('encoding.videoBitrateLabel')">
                   <n-input-number v-model:value="config.videoBitrate" placeholder="e.g. 5000" :min="100" :step="500" />
                 </n-form-item>
               </template>
 
               <template v-if="config.audioCodec === 'aac'">
-                <n-form-item label="Audio Bitrate">
+                <n-form-item :label="$t('encoding.audioBitrate')">
                   <n-select v-model:value="config.audioBitrate" :options="audioBitrateOptions" />
                 </n-form-item>
               </template>
             </template>
 
-            <n-form-item label="Select Subtitle Version" class="full-width">
+            <n-form-item :label="$t('encoding.selectVersion')" class="full-width">
               <n-select v-model:value="selectedSubtitlePath" :options="subtitleOptions"
-                placeholder="Select a subtitle version..." />
+                :placeholder="$t('encoding.selectVersionPlaceholder')" />
             </n-form-item>
           </div>
 
@@ -97,29 +97,29 @@
               <n-button type="primary" size="large" block
                 :disabled="!projectStore.currentProject || (!canCopy && config.videoCodec === 'copy')"
                 @click="addToQueue">
-                Add to Queue
+                {{ $t('encoding.addToQueue') }}
               </n-button>
               <div v-if="!canCopy && config.videoCodec === 'copy'" class="warning-text">
-                Hard Subs require re-encoding (cannot use Copy codec).
+                {{ $t('encoding.hardSubWarning') }}
               </div>
             </template>
             <template v-else>
               <n-button type="primary" size="large" block
                 :disabled="!projectStore.currentProject || !selectedSubtitlePath" @click="exportSubtitles">
-                Export Subtitle File
+                {{ $t('encoding.exportBtn') }}
               </n-button>
             </template>
           </div>
         </n-form>
       </n-card>
 
-      <n-card class="queue-card" title="Job Queue">
+      <n-card class="queue-card" :title="$t('encoding.jobQueueTitle')">
         <template #header-extra>
-          <n-button size="small" @click="encoderStore.clearDone">Clear Done</n-button>
+          <n-button size="small" @click="encoderStore.clearDone">{{ $t('encoding.clearDone') }}</n-button>
         </template>
 
         <div v-if="encoderStore.queue.length === 0" class="empty-state">
-          <n-empty description="Queue is empty" />
+          <n-empty :description="$t('encoding.queueEmpty')" />
         </div>
 
         <div v-else class="queue-list">
@@ -132,9 +132,9 @@
             </div>
 
             <div class="job-details">
-              {{ job.subMode === 'hard' ? 'Hard Sub' : 'Soft Sub' }} • {{ job.format.toUpperCase() }} • {{
-                job.videoCodec === 'copy' ? 'Copy' : (job.rateControl === 'bitrate' ? `Bitrate ${job.videoBitrate}` : `CRF ${job.crf}`)
-              }} • {{ job.outputFps === 'original' ? 'Original FPS' : (job.outputFps.includes('/') ? (parseInt(job.outputFps.split('/')[0]) / parseInt(job.outputFps.split('/')[1])).toFixed(3) : job.outputFps) + ' FPS' }}
+              {{ job.subMode === 'hard' ? $t('encoding.hardSub') : $t('encoding.softSub') }} • {{ job.format.toUpperCase() }} • {{
+                job.videoCodec === 'copy' ? $t('encoding.options.copy').split(' ')[0] : (job.rateControl === 'bitrate' ? `Bitrate ${job.videoBitrate}` : `CRF ${job.crf}`)
+              }} • {{ job.outputFps === 'original' ? $t('encoding.options.sameAsSource') : (job.outputFps.includes('/') ? (parseInt(job.outputFps.split('/')[0]) / parseInt(job.outputFps.split('/')[1])).toFixed(3) : job.outputFps) + ' FPS' }}
             </div>
 
             <div class="progress-section" v-if="job.status === 'encoding'">
@@ -143,12 +143,12 @@
             </div>
 
             <div class="job-actions" v-if="job.status === 'pending'">
-              <n-button size="tiny" @click="encoderStore.removeJob(job.id)">Remove</n-button>
+              <n-button size="tiny" @click="encoderStore.removeJob(job.id)">{{ $t('encoding.actions.remove') }}</n-button>
               <n-button size="tiny" type="primary" @click="startJob(job)"
-                :disabled="!!encoderStore.activeJobId">Start</n-button>
+                :disabled="!!encoderStore.activeJobId">{{ $t('encoding.actions.start') }}</n-button>
             </div>
             <div class="job-actions" v-if="job.status === 'encoding'">
-              <n-button size="tiny" type="error" @click="cancelJob">Cancel</n-button>
+              <n-button size="tiny" type="error" @click="cancelJob">{{ $t('encoding.actions.cancel') }}</n-button>
             </div>
           </div>
         </div>
@@ -171,10 +171,12 @@ import { MediaService } from '../services/mediaService'
 import { save } from '@tauri-apps/plugin-dialog'
 import { SubtitleManager } from '../services/subtitleManager'
 import type { SubtitleVersion } from '../services/subtitleManager'
+import { useI18n } from 'vue-i18n'
 
 const message = useMessage()
 const projectStore = useProjectStore()
 const encoderStore = useEncoderStore()
+const { t } = useI18n()
 
 const availableSubtitles = ref<SubtitleVersion[]>([])
 const selectedSubtitlePath = ref<string | null>(null)
@@ -239,7 +241,7 @@ const videoCodecOptions = computed(() => {
     { label: 'NVENC H.264 (NVIDIA)', value: 'h264_nvenc' }
   ]
   if (canCopy.value) {
-    options.unshift({ label: 'Copy (No Re-encoding)', value: 'copy' })
+    options.unshift({ label: t('encoding.options.copy'), value: 'copy' })
   } else if (config.value.videoCodec === 'copy') {
     config.value.videoCodec = 'libx264'
   }
@@ -259,17 +261,17 @@ const audioBitrateOptions = [
   { label: '256 kbps', value: '256k' }
 ]
 
-const resolutionOptions = [
-  { label: 'Original', value: 'original' },
+const resolutionOptions = computed(() => [
+  { label: t('encoding.options.original'), value: 'original' },
   { label: '1080p', value: '1080p' },
   { label: '720p', value: '720p' },
   { label: '480p', value: '480p' },
   { label: '360p', value: '360p' },
-  { label: 'Custom', value: 'custom' }
-]
+  { label: t('encoding.options.custom'), value: 'custom' }
+])
 
-const outputFpsOptions = [
-  { label: 'Same as Source', value: 'original' },
+const outputFpsOptions = computed(() => [
+  { label: t('encoding.options.sameAsSource'), value: 'original' },
   { label: '23.976 fps', value: '24000/1001' },
   { label: '24 fps', value: '24' },
   { label: '25 fps', value: '25' },
@@ -278,7 +280,7 @@ const outputFpsOptions = [
   { label: '50 fps', value: '50' },
   { label: '59.94 fps', value: '60000/1001' },
   { label: '60 fps', value: '60' }
-]
+])
 
 const presetOptions = [
   { label: 'Ultrafast', value: 'ultrafast' },
@@ -309,9 +311,9 @@ onMounted(async () => {
       systemStore.isEncoding = false
       systemStore.setTask('Idle')
       if (data.status === 'success') {
-        message.success('Encoding job completed!')
+        message.success(t('encoding.messages.encodeSuccess'))
       } else {
-        message.error('Encoding job failed!')
+        message.error(t('encoding.messages.encodeFail'))
       }
     } catch (e) {
       console.error(e)
@@ -331,18 +333,18 @@ onUnmounted(() => {
 
 const addToQueue = async () => {
   if (!projectStore.currentProject) {
-    message.error("Please select a project first")
+    message.error(t('encoding.messages.selectProject'))
     return
   }
 
   const project = projectStore.currentProject
   if (!project || !project.source_video) {
-    message.error("Project has no source video")
+    message.error(t('encoding.messages.noVideo'))
     return
   }
 
   if (!selectedSubtitlePath.value) {
-    message.error("Please select a subtitle version to burn or encode")
+    message.error(t('encoding.messages.selectSubForJob'))
     return
   }
 
@@ -385,9 +387,9 @@ const addToQueue = async () => {
     }
 
     encoderStore.addJob(job)
-    message.success("Job added to queue")
+    message.success(t('encoding.messages.jobAdded'))
   } catch (e: any) {
-    message.error("Failed to add job: " + e)
+    message.error(t('encoding.messages.jobAddFail') + e)
   }
 }
 
@@ -396,14 +398,14 @@ const systemStore = useSystemStore()
 
 const startJob = async (job: EncodeJob) => {
   if (encoderStore.activeJobId) {
-    message.warning("A job is already running")
+    message.warning(t('encoding.messages.jobRunning'))
     return
   }
 
   job.status = 'encoding'
   encoderStore.activeJobId = job.id
   systemStore.isEncoding = true
-  systemStore.setTask('Encoding Video...')
+  systemStore.setTask(t('encoding.messages.encodingStatus'))
 
   try {
     await invoke('start_encoding_cmd', {
@@ -427,7 +429,7 @@ const startJob = async (job: EncodeJob) => {
       }
     })
   } catch (e: any) {
-    message.error("Failed to start encoder: " + e)
+    message.error(t('encoding.messages.startFail') + e)
     job.status = 'error'
     encoderStore.activeJobId = null
     systemStore.isEncoding = false
@@ -440,9 +442,9 @@ const cancelJob = async () => {
     await invoke('cancel_encoding_cmd')
     systemStore.isEncoding = false
     systemStore.setTask('Idle')
-    message.warning("Encoding cancelled")
+    message.warning(t('encoding.messages.cancelled'))
   } catch (e: any) {
-    message.error("Failed to cancel: " + e)
+    message.error(t('encoding.messages.cancelFail') + e)
   }
 }
 
@@ -455,7 +457,7 @@ const getStatusType = (status: string) => {
 
 const exportSubtitles = async () => {
   if (!selectedSubtitlePath.value) {
-    message.warning("Please select a subtitle to export!")
+    message.warning(t('encoding.messages.selectSubExport'))
     return
   }
 
@@ -476,10 +478,10 @@ const exportSubtitles = async () => {
         path: filePath,
         content: content
       })
-      message.success("Subtitle exported successfully")
+      message.success(t('encoding.messages.exportSuccess'))
     }
   } catch (e) {
-    message.error("Failed to export subtitle: " + e)
+    message.error(t('encoding.messages.exportFail') + e)
   }
 }
 </script>

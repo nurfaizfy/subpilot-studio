@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
+import i18n from '../i18n'
 
 export const useSettingsStore = defineStore('settings', () => {
   const language = ref('en-US')
@@ -12,7 +13,10 @@ export const useSettingsStore = defineStore('settings', () => {
     const saved = localStorage.getItem('subpilot-settings')
     if (saved) {
       const parsed = JSON.parse(saved)
-      if (parsed.language !== undefined) language.value = parsed.language
+      if (parsed.language !== undefined) {
+        language.value = parsed.language
+        ;(i18n.global.locale as any).value = parsed.language
+      }
       if (parsed.theme !== undefined) theme.value = parsed.theme
       if (parsed.workspaceDir !== undefined) workspaceDir.value = parsed.workspaceDir
       if (parsed.autoSave !== undefined) autoSave.value = parsed.autoSave
@@ -34,6 +38,7 @@ export const useSettingsStore = defineStore('settings', () => {
     language, theme, workspaceDir, autoSave, autoBackup
   ], () => {
     saveSettings()
+    ;(i18n.global.locale as any).value = language.value
   }, { deep: true })
 
   loadSettings()

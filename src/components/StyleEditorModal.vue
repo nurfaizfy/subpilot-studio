@@ -1,74 +1,74 @@
 <template>
-  <n-modal v-model:show="internalShow" preset="card" :title="isEdit ? 'Edit Style' : 'New Style'" style="width: 800px; max-width: 95vw;">
+  <n-modal v-model:show="internalShow" preset="card" :title="isEdit ? $t('styleEditor.editStyle') : $t('styleEditor.newStyle')" style="width: 800px; max-width: 95vw;">
     <n-form ref="formRef" :model="formData" :rules="rules" label-placement="left" label-width="120" require-mark-placement="right-hanging">
       <n-tabs type="line" animated>
-        <n-tab-pane name="basics" tab="Basics">
-          <n-form-item label="Style Name" path="Name">
-            <n-input v-model:value="formData.Name" placeholder="e.g. Dialogue" :disabled="isEdit && formData.Name === 'Default'" />
+        <n-tab-pane name="basics" :tab="$t('styleEditor.tabs.basics')">
+          <n-form-item :label="$t('styleEditor.fields.styleName')" path="Name">
+            <n-input v-model:value="formData.Name" :placeholder="$t('styleEditor.placeholders.styleName')" :disabled="isEdit && formData.Name === 'Default'" />
           </n-form-item>
-          <n-form-item label="Font Name" path="Fontname">
-            <n-select filterable tag v-model:value="formData.Fontname" :options="systemFonts" placeholder="e.g. Arial" />
+          <n-form-item :label="$t('styleEditor.fields.fontName')" path="Fontname">
+            <n-select filterable tag v-model:value="formData.Fontname" :options="systemFonts" :placeholder="$t('styleEditor.placeholders.fontName')" />
           </n-form-item>
-          <n-form-item label="Font Size" path="Fontsize">
+          <n-form-item :label="$t('styleEditor.fields.fontSize')" path="Fontsize">
             <n-input-number v-model:value="formData.Fontsize" :min="1" />
           </n-form-item>
         </n-tab-pane>
 
-        <n-tab-pane name="colors" tab="Colors">
-          <n-form-item label="Primary" path="PrimaryColour">
+        <n-tab-pane name="colors" :tab="$t('styleEditor.tabs.colors')">
+          <n-form-item :label="$t('styleEditor.fields.primary')" path="PrimaryColour">
             <n-color-picker show-alpha :modes="['hex']" v-model:value="primaryColorHex" />
           </n-form-item>
-          <n-form-item label="Secondary" path="SecondaryColour">
+          <n-form-item :label="$t('styleEditor.fields.secondary')" path="SecondaryColour">
             <n-color-picker show-alpha :modes="['hex']" v-model:value="secondaryColorHex" />
           </n-form-item>
-          <n-form-item label="Outline" path="OutlineColour">
+          <n-form-item :label="$t('styleEditor.fields.outline')" path="OutlineColour">
             <n-color-picker show-alpha :modes="['hex']" v-model:value="outlineColorHex" />
           </n-form-item>
-          <n-form-item label="Background" path="BackColour">
+          <n-form-item :label="$t('styleEditor.fields.background')" path="BackColour">
             <n-color-picker show-alpha :modes="['hex']" v-model:value="backColorHex" />
           </n-form-item>
         </n-tab-pane>
 
-        <n-tab-pane name="layout" tab="Margins & Alignment">
-          <n-form-item label="Alignment" path="Alignment">
+        <n-tab-pane name="layout" :tab="$t('styleEditor.tabs.layout')">
+          <n-form-item :label="$t('styleEditor.fields.alignment')" path="Alignment">
             <n-select v-model:value="formData.Alignment" :options="alignmentOptions" />
           </n-form-item>
-          <n-form-item label="Margin L" path="MarginL">
+          <n-form-item :label="$t('styleEditor.fields.marginL')" path="MarginL">
             <n-input-number v-model:value="formData.MarginL" :min="0" />
           </n-form-item>
-          <n-form-item label="Margin R" path="MarginR">
+          <n-form-item :label="$t('styleEditor.fields.marginR')" path="MarginR">
             <n-input-number v-model:value="formData.MarginR" :min="0" />
           </n-form-item>
-          <n-form-item label="Margin V" path="MarginV">
+          <n-form-item :label="$t('styleEditor.fields.marginV')" path="MarginV">
             <n-input-number v-model:value="formData.MarginV" :min="0" />
           </n-form-item>
         </n-tab-pane>
 
-        <n-tab-pane name="effects" tab="Outline & Shadow">
-          <n-form-item label="Outline" path="Outline">
+        <n-tab-pane name="effects" :tab="$t('styleEditor.tabs.effects')">
+          <n-form-item :label="$t('styleEditor.fields.outline')" path="Outline">
             <n-input-number v-model:value="formData.Outline" :min="0" />
           </n-form-item>
-          <n-form-item label="Shadow" path="Shadow">
+          <n-form-item :label="$t('styleEditor.fields.shadow')" path="Shadow">
             <n-input-number v-model:value="formData.Shadow" :min="0" />
           </n-form-item>
-          <n-form-item label="Bold" path="Bold">
+          <n-form-item :label="$t('styleEditor.fields.bold')" path="Bold">
             <n-switch v-model:value="formData.Bold" :checked-value="-1" :unchecked-value="0" />
           </n-form-item>
-          <n-form-item label="Italic" path="Italic">
+          <n-form-item :label="$t('styleEditor.fields.italic')" path="Italic">
             <n-switch v-model:value="formData.Italic" :checked-value="-1" :unchecked-value="0" />
           </n-form-item>
-          <n-form-item label="Underline" path="Underline">
+          <n-form-item :label="$t('styleEditor.fields.underline')" path="Underline">
             <n-switch v-model:value="formData.Underline" :checked-value="-1" :unchecked-value="0" />
           </n-form-item>
-          <n-form-item label="Strikeout" path="StrikeOut">
+          <n-form-item :label="$t('styleEditor.fields.strikeout')" path="StrikeOut">
             <n-switch v-model:value="formData.StrikeOut" :checked-value="-1" :unchecked-value="0" />
           </n-form-item>
         </n-tab-pane>
       </n-tabs>
 
       <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
-        <n-button @click="internalShow = false">Cancel</n-button>
-        <n-button type="primary" @click="handleSave">Save</n-button>
+        <n-button @click="internalShow = false">{{ $t('styleEditor.buttons.cancel') }}</n-button>
+        <n-button type="primary" @click="handleSave">{{ $t('styleEditor.buttons.save') }}</n-button>
       </div>
     </n-form>
   </n-modal>
@@ -80,6 +80,7 @@ import {
   NModal, NForm, NFormItem, NInput, NInputNumber, NSelect, NSwitch, NTabs, NTabPane, NColorPicker, NButton, useMessage
 } from 'naive-ui'
 import { invoke } from '@tauri-apps/api/core'
+import { useI18n } from 'vue-i18n'
 import { useStylesStore } from '../stores/styles'
 import { assColorToHex, hexToAssColor } from '../utils/subtitleParser'
 import type { AssStyle } from '../utils/subtitleParser'
@@ -96,6 +97,7 @@ const emit = defineEmits<{
 
 const stylesStore = useStylesStore()
 const message = useMessage()
+const { t } = useI18n()
 
 const internalShow = computed({
   get: () => props.show,
@@ -188,10 +190,10 @@ const loadFonts = async () => {
   }
 }
 
-const rules = {
-  Name: [{ required: true, message: 'Style name is required', trigger: 'blur' }],
-  Fontname: [{ required: true, message: 'Font name is required', trigger: 'blur' }]
-}
+const rules = computed(() => ({
+  Name: [{ required: true, message: t('styleEditor.messages.nameRequired'), trigger: 'blur' }],
+  Fontname: [{ required: true, message: t('styleEditor.messages.fontRequired'), trigger: 'blur' }]
+}))
 
 watch(() => props.show, (val) => {
   if (val) {
@@ -246,11 +248,11 @@ const handleSave = () => {
         }
         
         await stylesStore.saveStyle(payload as AssStyle)
-        message.success(`Style ${isEdit.value ? 'updated' : 'created'} successfully`)
+        message.success(t('styleEditor.messages.saveSuccess', { action: isEdit.value ? 'updated' : 'created' }))
         internalShow.value = false
         emit('saved')
       } catch (e: any) {
-        message.error(`Failed to save style: ${e.message}`)
+        message.error(t('styleEditor.messages.saveFailed') + e.message)
       }
     }
   })

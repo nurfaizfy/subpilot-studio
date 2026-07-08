@@ -1,0 +1,523 @@
+{
+  "models": {
+    "title": "Manajer Model AI",
+    "subtitle": "Unduh dan kelola model Faster-Whisper untuk pengenalan ucapan lokal.",
+    "installed": "Terpasang",
+    "notInstalled": "Belum Terpasang",
+    "downloadSize": "Ukuran Unduhan:",
+    "diskUsage": "Penggunaan Disk:",
+    "actions": {
+      "pause": "Jeda",
+      "resume": "Lanjutkan",
+      "cancel": "Batal",
+      "download": "Unduh",
+      "delete": "Hapus"
+    },
+    "status": {
+      "starting": "Memulai unduhan...",
+      "downloading": "Mengunduh",
+      "paused": "Dijeda",
+      "verifying": "Memverifikasi checksum...",
+      "extracting": "Mengekstrak file...",
+      "completed": "Selesai",
+      "error": "Kesalahan mengunduh"
+    }
+  },
+  "providers": {
+    "title": "Manajer Penyedia AI",
+    "subtitle": "Konfigurasi Model Bahasa untuk terjemahan. Aktifkan Cadangan untuk otomatis beralih penyedia jika yang utama gagal.",
+    "keySet": "Kunci Diatur",
+    "missingKey": "Kunci Hilang",
+    "defaultModel": "Model Bawaan:",
+    "fallbackEnabled": "Cadangan Diaktifkan:",
+    "configure": "Konfigurasi",
+    "testConnection": "Uji Koneksi",
+    "configureTitle": "Konfigurasi {name}",
+    "apiUrl": "URL API",
+    "apiKey": "Kunci API",
+    "apiKeyPlaceholder": "Kosongkan untuk mempertahankan kunci saat ini",
+    "cancel": "Batal",
+    "saveSecurely": "Simpan dengan Aman",
+    "messages": {
+      "saveSuccess": "Pengaturan penyedia berhasil disimpan",
+      "saveFail": "Gagal menyimpan. Galat: "
+    }
+  },
+  "diagnostics": {
+    "title": "Pusat Diagnostik",
+    "runBtn": "Jalankan Diagnostik Penuh",
+    "copyBtn": "Salin Laporan",
+    "emptyState": "Belum ada diagnostik yang dijalankan. Klik 'Jalankan Diagnostik Penuh' untuk memulai.",
+    "labels": {
+      "info": "Info:",
+      "path": "Jalur:",
+      "error": "Galat:",
+      "fix": "Perbaikan:"
+    },
+    "messages": {
+      "copySuccess": "Laporan disalin ke papan klip",
+      "copyFail": "Gagal menyalin laporan: "
+    }
+  },
+  "automation": {
+    "title": "Otomatisasi Folder Pantau",
+    "subtitle": "Proses video secara otomatis yang dimasukkan ke dalam folder",
+    "rulesTitle": "Aturan Otomatisasi",
+    "active": "Otomatisasi AKTIF",
+    "stopped": "Otomatisasi BERHENTI",
+    "desc": "Saat aktif, SubPilot akan memeriksa Folder Pantau setiap 10 detik.",
+    "watchFolder": "Jalur Folder Pantau",
+    "speechModel": "Model Pengenalan Ucapan",
+    "translateTarget": "Target Terjemahan Otomatis",
+    "logTitle": "Log Aktivitas",
+    "processing": "Memproses...",
+    "idle": "Diam",
+    "emptyLog": "Belum ada aktivitas.",
+    "languages": {
+      "id": "Bahasa Indonesia",
+      "en": "Bahasa Inggris"
+    }
+  },
+  "styling": {
+    "title": "Gaya Subtitle Global",
+    "newStyle": "Gaya Baru",
+    "table": {
+      "name": "Nama",
+      "font": "Font",
+      "size": "Ukuran",
+      "actions": "Aksi"
+    },
+    "messages": {
+      "duplicated": "Gaya {name} diduplikasi",
+      "duplicateFail": "Gagal menduplikasi gaya: ",
+      "confirmDeleteTitle": "Konfirmasi Hapus",
+      "confirmDeleteContent": "Apakah Anda yakin ingin menghapus gaya \"{name}\"?",
+      "deleteBtn": "Hapus",
+      "cancelBtn": "Batal",
+      "deleted": "Gaya {name} dihapus",
+      "deleteFail": "Gagal menghapus gaya: "
+    }
+  },
+  "dictionary": {
+    "title": "Kamus Global",
+    "subtitle": "Kelola aturan terjemahan terpadu (Menimpa Terjemahan AI)",
+    "addEntry": "Tambah Entri",
+    "filterByType": "Filter berdasar Tipe",
+    "search": "Cari teks asli atau terjemahan...",
+    "importJson": "Impor JSON",
+    "exportJson": "Ekspor JSON",
+    "editEntry": "Edit Entri",
+    "originalText": "Teks Asli",
+    "originalPlaceholder": "misal 先生",
+    "translation": "Terjemahan",
+    "translationPlaceholder": "misal Sensei",
+    "type": "Tipe",
+    "priority": "Prioritas (Lebih tinggi menimpa lebih rendah)",
+    "cancel": "Batal",
+    "save": "Simpan",
+    "table": {
+      "original": "Asli",
+      "translation": "Terjemahan",
+      "type": "Tipe",
+      "priority": "Prioritas",
+      "actions": "Aksi"
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Hapus",
+      "confirmDelete": "Apakah Anda yakin ingin menghapus entri ini?"
+    },
+    "messages": {
+      "originalRequired": "Teks asli wajib diisi",
+      "translationRequired": "Terjemahan wajib diisi",
+      "loadFail": "Gagal memuat kamus: ",
+      "fillRequired": "Silakan isi semua bidang yang diwajibkan",
+      "entryUpdated": "Entri diperbarui",
+      "entryAdded": "Entri ditambahkan",
+      "saveFail": "Gagal menyimpan entri: ",
+      "entryDeleted": "Entri dihapus",
+      "deleteFail": "Gagal menghapus entri: ",
+      "exportSuccess": "Kamus berhasil diekspor",
+      "exportFail": "Gagal mengekspor: ",
+      "invalidFormat": "Format tidak valid",
+      "importSuccess": "Berhasil mengimpor {count} entri",
+      "importFail": "Gagal mengimpor: "
+    }
+  },
+  "encoding": {
+    "settingsTitle": "Pengaturan Ekspor",
+    "exportAction": "Aksi Ekspor",
+    "encodeVideo": "Encode Video",
+    "exportSubtitles": "Ekspor Subtitle Saja",
+    "containerFormat": "Format Kontainer",
+    "subtitleMode": "Mode Subtitle",
+    "softSub": "Soft Sub",
+    "hardSub": "Hard Sub",
+    "videoCodec": "Codec Video",
+    "audioCodec": "Codec Audio",
+    "resolution": "Resolusi",
+    "rateControl": "Kontrol Laju",
+    "crfMode": "CRF (Kualitas Konstan)",
+    "bitrateMode": "Bitrate Manual",
+    "frameRate": "Frame Rate (FPS)",
+    "preset": "Preset",
+    "crfLabel": "CRF (Kualitas: 0-51, lebih rendah lebih baik)",
+    "videoBitrateLabel": "Bitrate Video (kbps)",
+    "audioBitrate": "Bitrate Audio",
+    "selectVersion": "Pilih Versi Subtitle",
+    "selectVersionPlaceholder": "Pilih versi subtitle...",
+    "addToQueue": "Tambahkan ke Antrean",
+    "hardSubWarning": "Hard Sub memerlukan re-encoding (tidak dapat menggunakan codec Copy).",
+    "exportBtn": "Ekspor File Subtitle",
+    "jobQueueTitle": "Antrean Tugas",
+    "clearDone": "Bersihkan Selesai",
+    "queueEmpty": "Antrean kosong",
+    "actions": {
+      "remove": "Hapus",
+      "start": "Mulai",
+      "cancel": "Batal"
+    },
+    "options": {
+      "copy": "Copy (Tanpa Re-encoding)",
+      "original": "Asli",
+      "custom": "Kustom",
+      "sameAsSource": "Sama dengan Sumber"
+    },
+    "messages": {
+      "selectProject": "Silakan pilih proyek terlebih dahulu",
+      "noVideo": "Proyek tidak memiliki video sumber",
+      "selectSubForJob": "Silakan pilih versi subtitle untuk dibakar atau di-encode",
+      "jobAdded": "Tugas ditambahkan ke antrean",
+      "jobAddFail": "Gagal menambahkan tugas: ",
+      "jobRunning": "Sebuah tugas sudah berjalan",
+      "encodingStatus": "Menge-encode Video...",
+      "startFail": "Gagal memulai encoder: ",
+      "cancelled": "Encoding dibatalkan",
+      "cancelFail": "Gagal membatalkan: ",
+      "encodeSuccess": "Tugas encoding selesai!",
+      "encodeFail": "Tugas encoding gagal!",
+      "selectSubExport": "Silakan pilih subtitle untuk diekspor!",
+      "exportSuccess": "Subtitle berhasil diekspor",
+      "exportFail": "Gagal mengekspor subtitle: "
+    }
+  },
+  "editor": {
+    "noProject": "Tidak ada proyek yang dipilih. Silakan buka proyek terlebih dahulu.",
+    "goToProjects": "Ke Halaman Proyek",
+    "import": "Impor Subtitle",
+    "undo": "Batal",
+    "redo": "Ulangi",
+    "save": "Simpan",
+    "selectVersion": "Pilih Versi",
+    "deleteVersion": "Hapus File Subtitle",
+    "shift": "Geser",
+    "search": "Cari...",
+    "detailedTimeline": "Garis Waktu Detail",
+    "globalStyle": "Gaya Global:",
+    "applyStyle": "Terapkan Gaya",
+    "editStyle": "Edit Gaya",
+    "newStyle": "Gaya Baru",
+    "format": "Format:",
+    "table": {
+      "start": "Mulai",
+      "end": "Selesai",
+      "style": "Gaya",
+      "text": "Teks",
+      "actions": "Aksi"
+    },
+    "actions": {
+      "split": "Pisah",
+      "mergeNext": "Gabung Berikutnya",
+      "deleteLine": "Hapus Baris"
+    },
+    "messages": {
+      "styleApplied": "Gaya '{name}' diterapkan ke semua baris",
+      "confirmDeleteTitle": "Konfirmasi Penghapusan",
+      "confirmDeleteText": "Apakah Anda yakin ingin menghapus versi subtitle ini? Tindakan ini tidak dapat dibatalkan.",
+      "deleteBtn": "Hapus",
+      "cancelBtn": "Batal",
+      "deleteSuccess": "File subtitle berhasil dihapus",
+      "deleteFail": "Gagal menghapus file subtitle: ",
+      "importSuccess": "Subtitle berhasil diimpor ke proyek",
+      "importFailParse": "Gagal mengurai file subtitle",
+      "importFail": "Gagal mengimpor subtitle",
+      "shifted": "Waktu digeser sebesar {amount}d",
+      "saveSuccess": "Subtitle disimpan",
+      "saveFail": "Gagal menyimpan subtitle"
+    }
+  },
+  "workspace": {
+    "noProject": "Tidak Ada Proyek yang Dipilih",
+    "importVideo": "Impor Video",
+    "importDesc": "Proyek ini belum memiliki video sumber. Impor video untuk mulai membuat subtitle.",
+    "selectVideo": "Pilih File Video",
+    "dropHint": "atau letakkan file video di sini",
+    "changeMedia": "Ubah Media",
+    "tabs": {
+      "overview": "Ringkasan",
+      "aiStudio": "Studio AI",
+      "editor": "Editor Subtitle",
+      "encoding": "Encoding & Ekspor"
+    },
+    "preparing": "Menyiapkan Workspace",
+    "generatingPreviews": "Membuat pratinjau adegan dan menganalisis trek audio...",
+    "loadingMedia": "Memuat info media...",
+    "messages": {
+      "waitProcess": "Harap tunggu proses saat ini selesai sebelum berpindah tab.",
+      "failPicker": "Gagal membuka pemilih file",
+      "unsupportedFormat": "Format file tidak didukung. Silakan letakkan file video.",
+      "analyzing": "Menganalisis media dengan FFprobe...",
+      "importSuccess": "Video diimpor! Memproses di latar belakang...",
+      "processingDone": "Pemrosesan video selesai.",
+      "updateFail": "Gagal memperbarui proyek dengan video baru"
+    }
+  },
+  "projects": {
+    "title": "Semua Proyek",
+    "newProject": "Proyek Baru",
+    "noProjects": "Tidak ada proyek yang ditemukan",
+    "createFirst": "Buat proyek pertama Anda",
+    "source": "Sumber",
+    "noSource": "Tidak ada file sumber",
+    "lastModified": "Terakhir Diubah",
+    "open": "Buka",
+    "createModalTitle": "Buat Proyek Baru",
+    "projectName": "Nama Proyek",
+    "enterProjectName": "Masukkan nama proyek",
+    "projectType": "Tipe Proyek",
+    "originalLang": "Bhs Asli",
+    "targetLang": "Bhs Target",
+    "selectLang": "Pilih Bahasa",
+    "season": "Musim",
+    "episode": "Episode",
+    "cancel": "Batal",
+    "createBtn": "Buat Proyek",
+    "types": {
+      "anime": "Anime",
+      "drama": "Drama",
+      "movie": "Film",
+      "other": "Lainnya"
+    },
+    "langs": {
+      "japanese": "Jepang",
+      "chinese": "Mandarin",
+      "korean": "Korea",
+      "english": "Inggris",
+      "indonesian": "Indonesia"
+    },
+    "actions": {
+      "duplicate": "Duplikat",
+      "delete": "Hapus"
+    },
+    "messages": {
+      "opened": "Membuka proyek: {name}",
+      "dupSuccess": "Proyek berhasil diduplikat",
+      "dupFail": "Gagal menduplikat proyek",
+      "confirmDelTitle": "Konfirmasi",
+      "confirmDelContent": "Apakah Anda yakin ingin menghapus proyek ini?",
+      "delSuccess": "Proyek dihapus",
+      "delFail": "Gagal menghapus proyek",
+      "nameReq": "Nama proyek wajib diisi",
+      "createSuccess": "Proyek berhasil dibuat",
+      "createFail": "Gagal membuat proyek"
+    }
+  },
+  "dashboard": {
+    "welcomeTitle": "Selamat Datang di SubPilot Studio",
+    "welcomeSubtitle": "Lingkungan produksi subtitle berbasis AI Anda",
+    "createProject": "Buat Proyek",
+    "createProjectDesc": "Mulai proyek subtitle baru dari awal",
+    "openProject": "Buka Proyek",
+    "openProjectDesc": "Muat proyek SubPilot yang sudah ada",
+    "recentProjects": "Proyek Terakhir",
+    "viewAll": "Lihat Semua",
+    "columns": {
+      "projectName": "Nama Proyek",
+      "type": "Tipe",
+      "transcript": "Transkrip",
+      "translate": "Terjemahan",
+      "readyToExport": "Siap Ekspor",
+      "lastModified": "Terakhir Diubah"
+    }
+  },
+  "topbar": {
+    "noProject": "Tidak Ada Proyek yang Dibuka",
+    "search": "Cari..."
+  },
+  "statusbar": {
+    "importing": "Mengimpor Video...",
+    "transcribing": "Mentranskripsi Audio...",
+    "translating": "Menerjemahkan Subtitle...",
+    "encoding": "Meng-encode Video...",
+    "encodingPercent": "Encoding: {percent}%"
+  },
+  "nav": {
+    "dashboard": "Dasbor",
+    "projects": "Proyek",
+    "dictionary": "Kamus Global",
+    "styling": "Gaya Subtitle",
+    "automation": "Otomasi",
+    "diagnostics": "Diagnostik",
+    "settings": "Pengaturan"
+  },
+  "settings": {
+    "title": "Pengaturan",
+    "subtitle": "Konfigurasi path aplikasi dan integrasi",
+    "tabs": {
+      "general": "Preferensi Umum",
+      "models": "Model Suara",
+      "providers": "Penyedia AI"
+    },
+    "general": {
+      "language": "Bahasa",
+      "theme": "Tema",
+      "defaultWorkspace": "Direktori Workspace Bawaan",
+      "autoSave": "Aktifkan Simpan Otomatis di Editor",
+      "autoBackup": "Aktifkan Pencadangan Otomatis"
+    },
+    "themes": {
+      "dark": "Gelap (Bawaan SubPilot)",
+      "light": "Terang",
+      "system": "Sistem"
+    }
+  },
+  "setup": {
+    "title": "Selamat Datang di SubPilot Studio",
+    "subtitle": "Mari siapkan lingkungan Anda sebelum memulai.",
+    "ffmpeg": "Mesin FFmpeg",
+    "ffmpegDesc": "Diperlukan untuk encoding dan pemrosesan video",
+    "whisper": "Mesin Whisper",
+    "whisperDesc": "Diperlukan untuk transkripsi AI",
+    "downloading": "Mengunduh...",
+    "extracting": "Mengekstrak...",
+    "downloadMissing": "Unduh yang Hilang",
+    "launch": "Jalankan SubPilot"
+  },
+  "aistudio": {
+    "speechRecognition": "Pengenalan Ucapan",
+    "speechSettings": "Pengaturan Pengenalan Ucapan",
+    "whisperModel": "Model Whisper",
+    "language": "Bahasa",
+    "computeDevice": "Perangkat Komputasi",
+    "cpu": "CPU",
+    "gpu": "GPU (CUDA)",
+    "notSupported": "(Tidak Didukung)",
+    "outputFormat": "Format Output",
+    "startTranscription": "Mulai Transkripsi",
+    "status": "Status",
+    "running": "Berjalan",
+    "idle": "Diam",
+    "configureAndStart": "Konfigurasi pengaturan dan klik Mulai",
+    "progress": "Progres",
+    "speed": "Kecepatan",
+    "eta": "Sisa Waktu",
+    "currentSegment": "Segmen Saat Ini",
+    "initializing": "Menginisialisasi...",
+    "cancel": "Batal",
+    "resumeRetry": "Lanjutkan / Ulangi",
+    "aiTranslation": "Terjemahan AI",
+    "translationSettings": "Pengaturan Terjemahan",
+    "provider": "Penyedia",
+    "model": "Model",
+    "sourceSubtitle": "Subtitle Sumber",
+    "sourceLanguage": "Bahasa Sumber",
+    "target": "Target",
+    "batchSize": "Ukuran Batch (Baris per permintaan)",
+    "customPrompt": "Prompt Khusus / Nada (Opsional)",
+    "modelPlaceholder": "misal gemini-1.5-flash",
+    "selectSource": "Pilih sumber",
+    "promptPlaceholder": "misal Gunakan bahasa yang sopan dan alami. Hindari terjemahan harfiah untuk kata kasar...",
+    "startTranslation": "Mulai Terjemahan Batch",
+    "generateFirst": "* Buat atau impor subtitle terlebih dahulu sebelum menerjemahkan.",
+    "translationQueue": "Antrean Terjemahan",
+    "translating": "Menerjemahkan",
+    "readyToTranslate": "Siap menerjemahkan",
+    "totalChunks": "Total Chunk",
+    "completed": "Selesai",
+    "failed": "Gagal",
+    "chunk": "Chunk",
+    "lines": "Baris",
+    "pending": "Tertunda",
+    "translatingStatus": "Menerjemahkan...",
+    "success": "Sukses",
+    "errorStatus": "Galat: {error}",
+    "retry": "Ulangi",
+    "messages": {
+      "waitProcess": "Harap tunggu proses saat ini selesai sebelum berpindah tab.",
+      "transcriptionComplete": "Transkripsi berhasil diselesaikan!",
+      "newTranscriptionReady": "Transkripsi baru siap!",
+      "error": "Galat: ",
+      "selectProject": "Silakan pilih proyek terlebih dahulu",
+      "modelNotInstalled": "Model '{model}' belum terpasang. Silakan unduh dari Pengaturan terlebih dahulu.",
+      "noSourceVideo": "Proyek tidak memiliki video sumber",
+      "processingTranscription": "Memproses transkripsi...",
+      "analyzingMedia": "Menganalisis media...",
+      "transcriptionFailed": "Gagal memulai transkripsi: ",
+      "cancelledByUser": "Dibatalkan oleh pengguna.",
+      "transcriptionCancelled": "Transkripsi dibatalkan.",
+      "selectTarget": "Silakan pilih target proyek dan subtitle sumber",
+      "translatingSubtitles": "Menerjemahkan subtitle...",
+      "translationStartFailed": "Gagal memulai terjemahan: ",
+      "translationSaved": "Terjemahan disimpan dan dimuat di Editor!",
+      "translationSaveFailed": "Gagal menyimpan terjemahan: "
+    }
+  },
+  "styleEditor": {
+    "editStyle": "Edit Gaya",
+    "newStyle": "Gaya Baru",
+    "tabs": {
+      "basics": "Dasar",
+      "colors": "Warna",
+      "layout": "Margin & Penyelarasan",
+      "effects": "Garis Besar & Bayangan"
+    },
+    "fields": {
+      "styleName": "Nama Gaya",
+      "fontName": "Nama Font",
+      "fontSize": "Ukuran Font",
+      "primary": "Utama",
+      "secondary": "Kedua",
+      "outline": "Garis Besar",
+      "background": "Latar Belakang",
+      "alignment": "Penyelarasan",
+      "marginL": "Margin Kiri",
+      "marginR": "Margin Kanan",
+      "marginV": "Margin Vertikal",
+      "shadow": "Bayangan",
+      "bold": "Tebal",
+      "italic": "Miring",
+      "underline": "Garis Bawah",
+      "strikeout": "Coret"
+    },
+    "placeholders": {
+      "styleName": "misal Dialog",
+      "fontName": "misal Arial"
+    },
+    "buttons": {
+      "cancel": "Batal",
+      "save": "Simpan"
+    },
+    "messages": {
+      "nameRequired": "Nama gaya wajib diisi",
+      "fontRequired": "Nama font wajib diisi",
+      "saveSuccess": "Gaya berhasil di{action}",
+      "saveFailed": "Gagal menyimpan gaya: "
+    }
+  },
+  "mediaInfo": {
+    "empty": "Belum ada media yang dianalisis",
+    "title": "Informasi Media",
+    "format": "FORMAT / KONTAINER",
+    "size": "UKURAN FILE",
+    "videoCodec": "CODEC VIDEO",
+    "resolution": "RESOLUSI",
+    "aspectRatio": "RASIO ASPEK",
+    "frameRate": "FRAME RATE",
+    "bitrate": "BITRATE",
+    "duration": "DURASI",
+    "audioTracks": "Trek Audio ({count})",
+    "noAudio": "Tidak ada trek audio",
+    "subtitleTracks": "Trek Subtitle ({count})",
+    "noSubtitles": "Tidak ada trek subtitle"
+  }
+}

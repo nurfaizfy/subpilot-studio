@@ -5,7 +5,7 @@
         <n-icon size="28" color="#6366f1">
           <ColorPaletteIcon />
         </n-icon>
-        <h2>Global Subtitle Styles</h2>
+        <h2>{{ $t('styling.title') }}</h2>
       </div>
       <n-button type="primary" @click="openAddModal">
         <template #icon>
@@ -13,7 +13,7 @@
             <AddIcon />
           </n-icon>
         </template>
-        New Style
+        {{ $t('styling.newStyle') }}
       </n-button>
     </div>
 
@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, h } from 'vue'
+import { ref, onMounted, h, computed } from 'vue'
 import {
   NIcon, NButton, NCard, NDataTable, useMessage, useDialog
 } from 'naive-ui'
@@ -42,10 +42,12 @@ import {
 import { useStylesStore } from '../stores/styles'
 import type { AssStyle } from '../utils/subtitleParser'
 import StyleEditorModal from '../components/StyleEditorModal.vue'
+import { useI18n } from 'vue-i18n'
 
 const stylesStore = useStylesStore()
 const message = useMessage()
 const dialog = useDialog()
+const { t } = useI18n()
 
 const showModal = ref(false)
 const styleToEdit = ref<AssStyle | null>(null)
@@ -59,12 +61,12 @@ onMounted(async () => {
   await stylesStore.loadStyles()
 })
 
-const columns = [
-  { title: 'Name', key: 'Name' },
-  { title: 'Font', key: 'Fontname' },
-  { title: 'Size', key: 'Fontsize' },
+const columns = computed(() => [
+  { title: t('styling.table.name'), key: 'Name' },
+  { title: t('styling.table.font'), key: 'Fontname' },
+  { title: t('styling.table.size'), key: 'Fontsize' },
   {
-    title: 'Actions',
+    title: t('styling.table.actions'),
     key: 'actions',
     render(row: AssStyle) {
       return h('div', { style: 'display: flex; gap: 8px;' }, [
@@ -85,7 +87,7 @@ const columns = [
       ])
     }
   }
-]
+])
 
 const openAddModal = () => {
   styleToEdit.value = null
@@ -102,26 +104,26 @@ const duplicateStyle = async (row: AssStyle) => {
     const newStyle = JSON.parse(JSON.stringify(row))
     newStyle.Name = `${row.Name}_copy`
     await stylesStore.saveStyle(newStyle)
-    message.success(`Style ${row.Name} duplicated`)
+    message.success(t('styling.messages.duplicated', { name: row.Name }))
     await stylesStore.loadStyles()
   } catch (e: any) {
-    message.error(`Failed to duplicate style: ${e.message}`)
+    message.error(t('styling.messages.duplicateFail') + e.message)
   }
 }
 
 const deleteStyle = (name: string) => {
   dialog.warning({
-    title: 'Confirm Delete',
-    content: `Are you sure you want to delete style "${name}"?`,
-    positiveText: 'Delete',
-    negativeText: 'Cancel',
+    title: t('styling.messages.confirmDeleteTitle'),
+    content: t('styling.messages.confirmDeleteContent', { name }),
+    positiveText: t('styling.messages.deleteBtn'),
+    negativeText: t('styling.messages.cancelBtn'),
     onPositiveClick: async () => {
       try {
         await stylesStore.deleteStyle(name)
-        message.success(`Style ${name} deleted`)
+        message.success(t('styling.messages.deleted', { name }))
         await stylesStore.loadStyles()
       } catch (e: any) {
-        message.error(`Failed to delete style: ${e.message}`)
+        message.error(t('styling.messages.deleteFail') + e.message)
       }
     }
   })
